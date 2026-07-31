@@ -1,0 +1,9 @@
+<svg width="680" height="300" viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg">
+<rect x="240" y="70" width="120" height="120" rx="16" fill="#082a56"/>
+<path d="M300 96 L336 122 L336 158 L264 158 L264 122 Z" fill="#ffffff" opacity="0.97"/>
+<path d="M300 96 L336 122 L264 122 Z" fill="#ffffff"/>
+<path d="M300 118 C316 122 324 136 320 150 C316 162 302 166 290 160 C282 156 279 146 283 136 C287 128 294 120 300 118 Z" fill="#3fae6a"/>
+<path d="M300 122 C298 136 294 148 284 158" stroke="#082a56" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+<text x="400" y="122" text-anchor="start" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#1a1a1a">Garden City</text>
+<text x="400" y="152" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="400" fill="#3fae6a" letter-spacing="1.5">PROPERTY CARE</text>
+</svg>
