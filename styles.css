@@ -53,3 +53,44 @@ section{padding:92px 0}.cream{background:linear-gradient(180deg,#fbfaf6,#f5f8ff)
 @keyframes energyPulse{0%,100%{transform:scale(.55) rotate(0);opacity:.25}50%{transform:scale(1.35) rotate(35deg);opacity:1}}
 @media(max-width:640px){.floating-quote{display:none}.micro{display:none}.reveal{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}.floating-quote:before,.micro{animation:none!important}}
+/* ===== Moving Banner ===== */
+
+.moving-banner{
+    width:100%;
+    overflow:hidden;
+    background:linear-gradient(90deg,#0d47a1,#00bcd4,#00c853,#ffeb3b,#ff4081,#0d47a1);
+    background-size:600% 600%;
+    animation:bannerBg 12s linear infinite;
+    padding:14px 0;
+}
+
+.moving-banner-track{
+    display:flex;
+    width:max-content;
+    animation:moveBanner 20s linear infinite;
+}
+
+.moving-banner span{
+    font-size:20px;
+    font-weight:700;
+    margin-right:70px;
+    white-space:nowrap;
+    text-shadow:0 0 12px rgba(255,255,255,.8);
+}
+
+.banner-blue{color:#4fc3f7;}
+.banner-green{color:#69f0ae;}
+.banner-red{color:#ff5252;}
+.banner-yellow{color:#ffee58;}
+.banner-pink{color:#ff80ab;}
+
+@keyframes moveBanner{
+    from{transform:translateX(100%);}
+    to{transform:translateX(-100%);}
+}
+
+@keyframes bannerBg{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
