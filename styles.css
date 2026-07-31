@@ -67,11 +67,11 @@ section{padding:92px 0}.cream{background:linear-gradient(180deg,#fbfaf6,#f5f8ff)
 .moving-banner-track{
     display:flex;
     width:max-content;
-    animation:moveBanner 20s linear infinite;
+    animation:moveBanner 40s linear infinite;
 }
 
 .moving-banner span{
-    font-size:20px;
+    font-size:25px;
     font-weight:700;
     margin-right:70px;
     white-space:nowrap;
