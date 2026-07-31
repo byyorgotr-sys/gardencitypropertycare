@@ -67,7 +67,7 @@ section{padding:92px 0}.cream{background:linear-gradient(180deg,#fbfaf6,#f5f8ff)
 .moving-banner-track{
     display:flex;
     width:max-content;
-    animation:moveBanner 40s linear infinite;
+    animation: moveBanner 55s linear infinite;
 }
 
 .moving-banner span{
