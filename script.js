@@ -57,3 +57,21 @@ if(!reduceMotion){
     card.addEventListener('pointerleave',()=>{card.style.transform='';});
   });
 }
+
+
+// Reveal content gently as it enters the viewport
+const revealTargets=document.querySelectorAll('main section:not(.hero), .card, .step, .faq details');
+revealTargets.forEach(el=>el.classList.add('reveal'));
+if('IntersectionObserver' in window && !reduceMotion){
+  const revealObserver=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+  revealTargets.forEach(el=>revealObserver.observe(el));
+}else{
+  revealTargets.forEach(el=>el.classList.add('visible'));
+}

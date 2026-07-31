@@ -29,3 +29,27 @@ section{padding:92px 0}.cream{background:linear-gradient(180deg,#fbfaf6,#f5f8ff)
 @keyframes waterRipples{to{background-position:0 180px}}@keyframes heroPulse{50%{transform:scale(1.08);opacity:.75}}@keyframes starDrift{to{background-position:90px 90px,175px 190px}}@keyframes buttonShine{0%,55%{transform:translateX(-75%) rotate(8deg)}85%,100%{transform:translateX(75%) rotate(8deg)}}
 @media(max-width:900px){.trust-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:640px){.trust-strip{padding:0 0 20px}.trust-grid{grid-template-columns:1fr 1fr;border-radius:18px}.trust-grid>div{padding:15px}.trust-grid small{display:none}.hero h1{font-size:42px}.hero-stars{opacity:.45}.card{transform:none!important}.card-glow{display:none}}
+
+
+/* Garden City V3 motion and conversion layer */
+.micro{position:absolute;pointer-events:none;opacity:0;font-size:11px;color:var(--card);filter:drop-shadow(0 0 7px color-mix(in srgb,var(--card) 75%,white));}
+.card:hover .micro{opacity:1}
+.micro-leaf{right:-2px;top:4px;animation:leafFloat 2.8s ease-in-out infinite}.micro-leaf.second{right:30px;top:-8px;animation-delay:.8s}
+.micro-drop{right:0;top:2px;animation:dropFall 1.55s ease-in infinite}.micro-drop.second{right:29px;top:-9px;animation-delay:.55s}
+.micro-rain{right:5px;top:-4px;animation:rainFall 1.35s linear infinite}.micro-rain.second{right:32px;animation-delay:.45s}
+.micro-fall{right:-1px;top:2px;animation:fallLeaf 2.4s ease-in-out infinite}.micro-fall.second{right:32px;top:-7px;animation-delay:.75s}
+.micro-shine{inset:-8px;border-radius:50%;background:conic-gradient(from 180deg,transparent,#fff8,transparent 22%);animation:toolShine 2.2s linear infinite}
+.micro-energy{right:-3px;top:0;animation:energyPulse 1.5s ease-in-out infinite}.micro-energy.second{right:31px;top:-9px;animation-delay:.55s}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .75s ease,transform .75s cubic-bezier(.2,.8,.2,1)}
+.reveal.visible{opacity:1;transform:none}
+.floating-quote{position:fixed;right:22px;bottom:22px;z-index:55;color:#fff;background:linear-gradient(135deg,#0b82ff,#0ad0b5);padding:14px 19px;border-radius:999px;font-weight:900;box-shadow:0 14px 40px rgba(4,87,180,.35);overflow:hidden}
+.floating-quote:before{content:"";position:absolute;inset:-70% -20%;background:linear-gradient(110deg,transparent 35%,#fff9 48%,transparent 62%);transform:translateX(-80%) rotate(9deg);animation:buttonShine 3.4s ease-in-out infinite}
+.floating-quote:hover{transform:translateY(-3px);box-shadow:0 18px 48px rgba(4,87,180,.46)}
+@keyframes leafFloat{0%,100%{transform:translate(0,0) rotate(0)}50%{transform:translate(-8px,-15px) rotate(35deg)}}
+@keyframes dropFall{0%{transform:translateY(-5px) scale(.6);opacity:0}30%{opacity:1}100%{transform:translateY(42px) scale(1);opacity:0}}
+@keyframes rainFall{0%{transform:translateY(-6px);opacity:0}25%{opacity:1}100%{transform:translateY(38px);opacity:0}}
+@keyframes fallLeaf{0%,100%{transform:translate(0,0) rotate(0)}50%{transform:translate(-12px,18px) rotate(90deg)}}
+@keyframes toolShine{to{transform:rotate(360deg)}}
+@keyframes energyPulse{0%,100%{transform:scale(.55) rotate(0);opacity:.25}50%{transform:scale(1.35) rotate(35deg);opacity:1}}
+@media(max-width:640px){.floating-quote{display:none}.micro{display:none}.reveal{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}.floating-quote:before,.micro{animation:none!important}}
