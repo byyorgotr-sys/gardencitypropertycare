@@ -34,3 +34,26 @@ if(!reduceMotion){
     card.addEventListener('mouseleave',()=>clearInterval(timer));
   });
 }
+
+
+// Premium pointer-following light and subtle 3D card movement
+if(!reduceMotion){
+  document.querySelectorAll('.card').forEach(card=>{
+    const glow=document.createElement('span');
+    glow.className='card-glow';
+    card.prepend(glow);
+    card.addEventListener('pointermove',e=>{
+      const r=card.getBoundingClientRect();
+      const x=e.clientX-r.left;
+      const y=e.clientY-r.top;
+      glow.style.left=`${x}px`;
+      glow.style.top=`${y}px`;
+      if(window.innerWidth>640){
+        const rx=((y/r.height)-.5)*-7;
+        const ry=((x/r.width)-.5)*9;
+        card.style.transform=`translateY(-10px) scale(1.025) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      }
+    });
+    card.addEventListener('pointerleave',()=>{card.style.transform='';});
+  });
+}
