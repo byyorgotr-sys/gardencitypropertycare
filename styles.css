@@ -53,3 +53,30 @@ section{padding:92px 0;scroll-margin-top:76px}.cream{background:linear-gradient(
 @keyframes energyPulse{0%,100%{transform:scale(.55) rotate(0);opacity:.25}50%{transform:scale(1.35) rotate(35deg);opacity:1}}
 @media(max-width:640px){.floating-quote{display:none}.micro{display:none}.reveal{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}.floating-quote:before,.micro{animation:none!important}}
+
+/* Compact hero: keep the introduction useful without dominating the page. */
+.hero-grid{
+  min-height:0;
+  grid-template-columns:1fr;
+  gap:0;
+  padding:40px 0 38px;
+}
+.hero-grid>div:first-of-type{max-width:960px}
+.hero h1{
+  max-width:920px;
+  margin:13px 0 15px;
+  font-size:clamp(38px,4.6vw,58px);
+  line-height:.98;
+}
+.hero p{margin:0;font-size:17px;line-height:1.55}
+.hero .actions{margin-top:20px}
+.hero .trust-row{margin-top:18px}
+.hero-card{display:none}
+.ocean-light{height:300px;top:-125px}
+
+@media(max-width:640px){
+  .hero-grid{padding:32px 0 30px}
+  .hero h1{font-size:37px}
+  .hero p{font-size:16px}
+  .hero .trust-row{display:none}
+}
