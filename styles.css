@@ -81,4 +81,35 @@ section{padding:92px 0;scroll-margin-top:76px}.cream{background:linear-gradient(
   .hero h1{font-size:34px}
   .hero p{font-size:15px}
   .hero .trust-row{display:none}
+}/* FINAL HERO SIZE OVERRIDE */
+.hero-grid{
+  min-height:0 !important;
+  height:auto !important;
+  padding:28px 0 26px !important;
+  grid-template-columns:1fr !important;
+}
+
+.hero{
+  min-height:0 !important;
+}
+
+.hero h1{
+  margin:10px 0 12px !important;
+  font-size:48px !important;
+}
+
+.hero p{
+  margin:0 !important;
+}
+
+.hero .actions{
+  margin-top:12px !important;
+}
+
+.hero .trust-row{
+  margin-top:10px !important;
+}
+
+.hero-card{
+  display:none !important;
 }
