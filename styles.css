@@ -171,3 +171,14 @@ section{padding:92px 0;scroll-margin-top:76px}.cream{background:linear-gradient(
 .hero-stars{
   opacity:.35 !important;
 }
+/* REMOVE EXTRA BLUE HERO SPACE */
+.hero{
+  padding:0 !important;
+  min-height:0 !important;
+}
+
+.hero-grid{
+  min-height:0 !important;
+  height:auto !important;
+  padding:14px 0 !important;
+}
