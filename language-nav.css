@@ -1,0 +1,46 @@
+/* Compact multilingual navigation — safe override only */
+header .nav{gap:18px}
+header .brand{flex:0 0 auto}
+header .links{
+  gap:16px;
+  flex-wrap:nowrap;
+  white-space:nowrap;
+  font-size:13px;
+}
+header .links .phone-link{
+  white-space:nowrap;
+  font-size:13px;
+}
+header .links .pill{
+  padding:10px 15px;
+  white-space:nowrap;
+  line-height:1.15;
+}
+header .links a[href="/"],
+header .links a[href="/es/"],
+header .links a[href="/zh/"]{
+  font-size:12px;
+  min-width:26px;
+  text-align:center;
+  padding:4px 2px;
+}
+html[lang="es"] header .links{gap:13px;font-size:12.5px}
+html[lang="es"] header .links .pill{font-size:12px;padding:10px 13px}
+html[lang="es"] header .links .phone-link{font-size:12.5px}
+html[lang="zh-Hans"] header .links{gap:14px}
+
+@media (max-width:1180px) and (min-width:901px){
+  header .container{width:min(1240px,calc(100% - 24px))}
+  header .links{gap:11px;font-size:12px}
+  header .links .phone-link{font-size:12px}
+  header .links .pill{padding:9px 12px;font-size:12px}
+  header .brand strong{font-size:15px}
+  header .brand small{font-size:9px}
+  header .logo{width:40px;height:40px;border-radius:13px}
+}
+
+@media (max-width:900px){
+  header .links{white-space:normal;font-size:14px}
+  header .links .phone-link{font-size:14px}
+  header .links .pill{font-size:14px}
+}
