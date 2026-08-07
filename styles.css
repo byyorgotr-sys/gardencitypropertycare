@@ -251,4 +251,43 @@ section{padding:92px 0;scroll-margin-top:76px}.cream{background:linear-gradient(
     0 0 5px rgba(255,210,90,.75),
     0 0 12px rgba(255,210,90,.35);
   z-index:5;
+}/* Colorful trust-strip boxes */
+.trust-grid > div:nth-child(1){
+  background: linear-gradient(135deg, #a81f2d, #ef3d48) !important;
+  color: #fff !important;
+}
+
+.trust-grid > div:nth-child(2){
+  background: linear-gradient(135deg, #0a4c9a, #2b8cff) !important;
+  color: #fff !important;
+}
+
+.trust-grid > div:nth-child(3){
+  background: linear-gradient(135deg, #d4a514, #ffd85a) !important;
+  color: #1d1600 !important;
+}
+
+.trust-grid > div:nth-child(4){
+  background: linear-gradient(135deg, #0f6b3c, #29b35e) !important;
+  color: #fff !important;
+}
+
+/* Yellow box text darker for readability */
+.trust-grid > div:nth-child(3) strong,
+.trust-grid > div:nth-child(3) small,
+.trust-grid > div:nth-child(3) b{
+  color: #1d1600 !important;
+}
+
+/* Other boxes keep white text */
+.trust-grid > div:nth-child(1) strong,
+.trust-grid > div:nth-child(1) small,
+.trust-grid > div:nth-child(1) b,
+.trust-grid > div:nth-child(2) strong,
+.trust-grid > div:nth-child(2) small,
+.trust-grid > div:nth-child(2) b,
+.trust-grid > div:nth-child(4) strong,
+.trust-grid > div:nth-child(4) small,
+.trust-grid > div:nth-child(4) b{
+  color: #ffffff !important;
 }
