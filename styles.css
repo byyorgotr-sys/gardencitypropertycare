@@ -533,3 +533,23 @@ section{padding:92px 0;scroll-margin-top:76px}.cream{background:linear-gradient(
 .cards .card:hover::before{
   left:135% !important;
 }
+/* FINAL HERO PHOTO - LAWN CARE */
+.hero{
+  background:
+    linear-gradient(
+      90deg,
+      rgba(5,45,24,.48) 0%,
+      rgba(5,45,24,.28) 45%,
+      rgba(5,45,24,.08) 100%
+    ),
+    url('https://images.unsplash.com/photo-1782613064276-750c3a3ccdec?auto=format&fit=crop&fm=jpg&q=88&w=2000')
+    center 58% / cover no-repeat !important;
+}
+
+.hero::before,
+.hero::after,
+.ocean-light,
+.bubble-layer,
+.hero-stars{
+  display:none !important;
+}
