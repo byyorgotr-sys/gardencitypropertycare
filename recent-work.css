@@ -19,3 +19,53 @@
 @media(max-width:900px){.recent-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.recent-work .recent-head{align-items:start;flex-direction:column}}
 @media(max-width:640px){.recent-work{padding:58px 0 64px}.recent-grid{grid-template-columns:1fr}.recent-item,.recent-item img{min-height:235px}.recent-caption strong{font-size:17px}}
 @media(prefers-reduced-motion:reduce){.recent-item img,.recent-item:before{transition:none}}
+<section class="cleaning-services-section" id="cleaning-services">
+  <div class="container">
+    <div class="section-heading">
+      <span class="section-label">CLEANING SERVICES</span>
+      <h2>Cleaning Services for Homes and Businesses</h2>
+      <p>
+        Reliable house cleaning, office cleaning, move-out cleaning, post-construction cleanup,
+        commercial cleaning and industrial cleaning in Richmond, BC.
+      </p>
+    </div>
+
+    <div class="cleaning-cards">
+      <a class="cleaning-card house" href="/house-cleaning-richmond.html">
+        <div class="cleaning-icon">🏠</div>
+        <h3>House Cleaning</h3>
+        <p>Routine and deep cleaning for kitchens, bathrooms, bedrooms and living spaces.</p>
+      </a>
+
+      <a class="cleaning-card office" href="/office-cleaning-richmond.html">
+        <div class="cleaning-icon">🏢</div>
+        <h3>Office Cleaning</h3>
+        <p>Clean desks, floors, washrooms and shared spaces for a healthier workplace.</p>
+      </a>
+
+      <a class="cleaning-card moveout" href="/move-out-cleaning-richmond.html">
+        <div class="cleaning-icon">📦</div>
+        <h3>Move-Out Cleaning</h3>
+        <p>Detailed cleaning before moving out to leave the property fresh and ready.</p>
+      </a>
+
+      <a class="cleaning-card postconstruction" href="/post-construction-cleaning-richmond.html">
+        <div class="cleaning-icon">🧱</div>
+        <h3>Post-Construction Cleaning</h3>
+        <p>Dust removal, surface wiping and final cleanup after renovation or building work.</p>
+      </a>
+
+      <a class="cleaning-card commercial" href="/commercial-cleaning-richmond.html">
+        <div class="cleaning-icon">🧼</div>
+        <h3>Commercial Cleaning</h3>
+        <p>Professional cleaning for shops, buildings, rental properties and business spaces.</p>
+      </a>
+
+      <a class="cleaning-card industrial" href="/industrial-cleaning-richmond.html">
+        <div class="cleaning-icon">🏭</div>
+        <h3>Industrial Cleaning</h3>
+        <p>Heavy-duty cleaning support for warehouses, facilities and industrial work areas.</p>
+      </a>
+    </div>
+  </div>
+</section>
