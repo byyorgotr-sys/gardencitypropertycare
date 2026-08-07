@@ -35,7 +35,6 @@ if(!reduceMotion){
   });
 }
 
-
 // Premium pointer-following light and subtle 3D card movement
 if(!reduceMotion){
   document.querySelectorAll('.card').forEach(card=>{
@@ -58,6 +57,73 @@ if(!reduceMotion){
   });
 }
 
+// Recent Work gallery (localized automatically)
+(()=>{
+  const services=document.querySelector('#services');
+  if(!services || document.querySelector('.recent-work')) return;
+
+  const css=document.createElement('link');
+  css.rel='stylesheet';
+  css.href='/recent-work.css';
+  document.head.appendChild(css);
+
+  const lang=(document.documentElement.lang||'en').toLowerCase();
+  const isEs=lang.startsWith('es');
+  const isZh=lang.startsWith('zh');
+
+  const copy=isEs ? {
+    kicker:'Trabajos recientes',
+    title:'Vea nuestro trabajo en acción.',
+    intro:'Una muestra visual de los servicios de mantenimiento exterior que ofrecemos en Richmond y Metro Vancouver.',
+    labels:['Cuidado del césped','Lavado a presión','Limpieza de canaletas','Limpieza del jardín','Retiro de residuos','Cotización y evaluación'],
+    note:'Imágenes ilustrativas de los tipos de trabajo que realizamos.'
+  } : isZh ? {
+    kicker:'近期工作',
+    title:'看看我们的服务现场。',
+    intro:'展示我们在 Richmond 和大温哥华地区提供的室外物业维护服务类型。',
+    labels:['草坪护理','高压清洗','排水槽清洁','庭院清理','垃圾清运','报价与现场评估'],
+    note:'图片用于展示我们提供的服务类型。'
+  } : {
+    kicker:'Recent Work',
+    title:'See property care in action.',
+    intro:'A visual look at the exterior property services we can help with around Richmond and Metro Vancouver.',
+    labels:['Lawn Care','Pressure Washing','Gutter Cleaning','Yard Cleanup','Yard Waste Removal','Free Estimate'],
+    note:'Illustrative images showing the types of services we provide.'
+  };
+
+  const imgs=[
+    '/ChatGPT%20Image%207%20Ag%CC%86u%202026%2003_45_15%20(1).png',
+    '/ChatGPT%20Image%207%20Ag%CC%86u%202026%2003_45_15%20(2).png',
+    '/ChatGPT%20Image%207%20Ag%CC%86u%202026%2003_45_15%20(3).png',
+    '/ChatGPT%20Image%207%20Ag%CC%86u%202026%2003_45_15%20(4).png',
+    '/ChatGPT%20Image%207%20Ag%CC%86u%202026%2003_45_16%20(5).png',
+    '/ChatGPT%20Image%207%20Ag%CC%86u%202026%2003_45_16%20(6).png'
+  ];
+
+  const section=document.createElement('section');
+  section.className='recent-work';
+  section.id='recent-work';
+  section.innerHTML=`
+    <div class="container">
+      <div class="recent-head">
+        <div>
+          <span class="recent-kicker">${copy.kicker}</span>
+          <h2>${copy.title}</h2>
+          <p class="recent-intro">${copy.intro}</p>
+        </div>
+      </div>
+      <div class="recent-grid">
+        ${imgs.map((src,i)=>`
+          <figure class="recent-item">
+            <img src="${src}" alt="${copy.labels[i]} - Garden City Property Care Richmond BC" loading="lazy" decoding="async">
+            <figcaption class="recent-caption"><strong>${copy.labels[i]}</strong><span>↗</span></figcaption>
+          </figure>
+        `).join('')}
+      </div>
+      <p class="recent-note">${copy.note}</p>
+    </div>`;
+  services.insertAdjacentElement('afterend',section);
+})();
 
 // Reveal content gently as it enters the viewport
 const revealTargets=document.querySelectorAll('main section:not(.hero), .card, .step, .faq details');
