@@ -291,3 +291,80 @@ section{padding:92px 0;scroll-margin-top:76px}.cream{background:linear-gradient(
 .trust-grid > div:nth-child(4) b{
   color: #ffffff !important;
 }
+/* HERO: replace blue sky look with green property-care scene */
+.hero{
+  background:
+    linear-gradient(90deg, rgba(8,56,31,.72) 0%, rgba(8,56,31,.62) 38%, rgba(8,56,31,.36) 100%),
+    url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1600&q=80') center center / cover no-repeat !important;
+  padding: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* remove the current sky / glow effects */
+.hero::before,
+.hero::after,
+.ocean-light,
+.bubble-layer,
+.hero-stars{
+  display: none !important;
+}
+
+/* keep the section compact */
+.hero-grid{
+  min-height: 220px !important;
+  height: 220px !important;
+  max-height: 220px !important;
+  padding: 18px 0 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.hero-grid > div{
+  width: 100% !important;
+}
+
+.hero h1{
+  font-size: 34px !important;
+  line-height: 1.04 !important;
+  margin: 6px 0 8px !important;
+  color: #ffffff !important;
+}
+
+.hero p{
+  font-size: 13px !important;
+  line-height: 1.3 !important;
+  margin: 0 !important;
+  color: #eef8ef !important;
+  max-width: 760px !important;
+}
+
+.hero .kicker{
+  background: rgba(255,255,255,.14) !important;
+  border: 1px solid rgba(255,255,255,.28) !important;
+  color: #ffffff !important;
+  font-size: 9px !important;
+  padding: 4px 10px !important;
+}
+
+.hero .actions{
+  margin-top: 8px !important;
+  gap: 8px !important;
+}
+
+.hero .btn{
+  min-height: 36px !important;
+  padding: 0 16px !important;
+  font-size: 13px !important;
+}
+
+.hero .trust-row{
+  margin-top: 8px !important;
+  font-size: 10px !important;
+  gap: 10px !important;
+  color: #f3fff3 !important;
+}
+
+.hero-card{
+  display: none !important;
+}
