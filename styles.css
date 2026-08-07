@@ -571,3 +571,25 @@ section{padding:92px 0;scroll-margin-top:76px}.cream{background:linear-gradient(
   margin-top: 0 !important;
   margin-bottom: 24px !important;
 }
+/* FIX WHY US SECTION */
+#why{
+  scroll-margin-top:120px !important;
+  padding-top:50px !important;
+  padding-bottom:50px !important;
+}
+
+#why .split{
+  align-items:center !important;
+  gap:55px !important;
+}
+
+#why .split h2{
+  margin-top:0 !important;
+  font-size:46px !important;
+  line-height:1.06 !important;
+}
+
+#why .photo{
+  min-height:430px !important;
+  height:430px !important;
+}
