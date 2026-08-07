@@ -388,3 +388,148 @@ section{padding:92px 0;scroll-margin-top:76px}.cream{background:linear-gradient(
 .hero .kicker{
   text-shadow: 0 2px 8px rgba(0,0,0,.35);
 }
+/* ===== VIVID LIQUID SERVICE CARDS ===== */
+
+.cards .card{
+  position:relative !important;
+  overflow:hidden !important;
+  border:1px solid rgba(255,255,255,.45) !important;
+  box-shadow:
+    0 12px 30px rgba(0,0,0,.12),
+    inset 0 1px 0 rgba(255,255,255,.65) !important;
+  transition:
+    transform .35s ease,
+    box-shadow .35s ease,
+    filter .35s ease !important;
+}
+
+/* 1 - Green */
+.cards .card:nth-child(1){
+  --liquid:#19d86f;
+  background:linear-gradient(145deg,#8dffbd 0%,#20d875 42%,#0ca654 100%) !important;
+}
+
+/* 2 - Blue */
+.cards .card:nth-child(2){
+  --liquid:#178cff;
+  background:linear-gradient(145deg,#9dd7ff 0%,#248fff 43%,#0867d8 100%) !important;
+}
+
+/* 3 - Yellow */
+.cards .card:nth-child(3){
+  --liquid:#ffd21f;
+  background:linear-gradient(145deg,#fff7a3 0%,#ffd83e 45%,#e6ab00 100%) !important;
+}
+
+/* 4 - Orange */
+.cards .card:nth-child(4){
+  --liquid:#ff7a1a;
+  background:linear-gradient(145deg,#ffd0a4 0%,#ff8b32 45%,#e85b00 100%) !important;
+}
+
+/* 5 - Purple */
+.cards .card:nth-child(5){
+  --liquid:#9b4dff;
+  background:linear-gradient(145deg,#dfc1ff 0%,#9d55ff 43%,#6e24d8 100%) !important;
+}
+
+/* 6 - Red */
+.cards .card:nth-child(6){
+  --liquid:#ff4057;
+  background:linear-gradient(145deg,#ffb3bd 0%,#ff5063 43%,#d91f39 100%) !important;
+}
+
+/* White glossy reflection */
+.cards .card::before{
+  content:"" !important;
+  position:absolute !important;
+  width:55% !important;
+  height:180% !important;
+  top:-45% !important;
+  left:-85% !important;
+  background:linear-gradient(
+    110deg,
+    transparent 30%,
+    rgba(255,255,255,.10) 38%,
+    rgba(255,255,255,.80) 50%,
+    rgba(255,255,255,.18) 62%,
+    transparent 70%
+  ) !important;
+  transform:rotate(14deg) !important;
+  transition:left .7s cubic-bezier(.2,.7,.2,1) !important;
+  pointer-events:none !important;
+  z-index:1 !important;
+}
+
+/* Soft liquid bubble / water-drop glow */
+.cards .card::after{
+  content:"" !important;
+  position:absolute !important;
+  width:180px !important;
+  height:180px !important;
+  right:-60px !important;
+  bottom:-70px !important;
+  border-radius:50% !important;
+  background:
+    radial-gradient(
+      circle at 32% 25%,
+      rgba(255,255,255,.90),
+      rgba(255,255,255,.28) 26%,
+      rgba(255,255,255,.06) 55%,
+      transparent 72%
+    ) !important;
+  box-shadow:
+    inset 8px 8px 20px rgba(255,255,255,.35),
+    0 0 30px rgba(255,255,255,.22) !important;
+  opacity:.55 !important;
+  pointer-events:none !important;
+}
+
+/* Text */
+.cards .card h3,
+.cards .card p,
+.cards .card a{
+  position:relative !important;
+  z-index:3 !important;
+}
+
+.cards .card h3{
+  color:#fff !important;
+  text-shadow:0 2px 10px rgba(0,0,0,.28) !important;
+}
+
+.cards .card p{
+  color:rgba(255,255,255,.93) !important;
+  text-shadow:0 1px 5px rgba(0,0,0,.20) !important;
+}
+
+.cards .card a{
+  color:#fff !important;
+  text-shadow:0 1px 7px rgba(0,0,0,.30) !important;
+}
+
+/* Icon becomes glassy */
+.cards .card .icon{
+  position:relative !important;
+  z-index:3 !important;
+  background:rgba(255,255,255,.22) !important;
+  border:1px solid rgba(255,255,255,.60) !important;
+  backdrop-filter:blur(10px) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.7),
+    0 8px 20px rgba(0,0,0,.12) !important;
+}
+
+/* Hover = light passes over card */
+.cards .card:hover{
+  transform:translateY(-10px) scale(1.025) !important;
+  filter:saturate(1.18) brightness(1.08) !important;
+  box-shadow:
+    0 24px 50px rgba(0,0,0,.20),
+    0 0 32px color-mix(in srgb,var(--liquid) 45%,transparent),
+    inset 0 1px 0 rgba(255,255,255,.85) !important;
+}
+
+.cards .card:hover::before{
+  left:135% !important;
+}
