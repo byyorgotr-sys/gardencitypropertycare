@@ -232,3 +232,23 @@ section{padding:92px 0;scroll-margin-top:76px}.cream{background:linear-gradient(
     0 0 28px rgba(241, 200, 90, 0.35);
   z-index: 5;
 }
+.trust-strip::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:2px;
+  background:linear-gradient(
+    90deg,
+    transparent 0%,
+    #d8a928 18%,
+    #ffe8a3 50%,
+    #d8a928 82%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 5px rgba(255,210,90,.75),
+    0 0 12px rgba(255,210,90,.35);
+  z-index:5;
+}
