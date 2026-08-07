@@ -112,4 +112,62 @@ section{padding:92px 0;scroll-margin-top:76px}.cream{background:linear-gradient(
 
 .hero-card{
   display:none !important;
+}/* FINAL HERO SIZE OVERRIDE - EXTRA COMPACT */
+
+.hero-grid{
+  min-height:0 !important;
+  height:auto !important;
+  padding:12px 0 12px !important;
+  grid-template-columns:1fr !important;
+}
+
+.hero{
+  min-height:0 !important;
+}
+
+.hero h1{
+  margin:6px 0 7px !important;
+  font-size:34px !important;
+  line-height:1.02 !important;
+}
+
+.hero .kicker{
+  font-size:9px !important;
+  padding:3px 8px !important;
+}
+
+.hero p{
+  margin:0 !important;
+  font-size:13px !important;
+  line-height:1.25 !important;
+  max-width:750px !important;
+}
+
+.hero .actions{
+  margin-top:7px !important;
+  gap:8px !important;
+}
+
+.hero .btn{
+  min-height:34px !important;
+  padding:0 15px !important;
+  font-size:13px !important;
+}
+
+.hero .trust-row{
+  margin-top:6px !important;
+  gap:10px !important;
+  font-size:10px !important;
+}
+
+.hero-card{
+  display:none !important;
+}
+
+.ocean-light{
+  height:130px !important;
+}
+
+.hero-stars{
+  opacity:.35 !important;
 }
