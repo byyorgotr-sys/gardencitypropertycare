@@ -1,0 +1,11 @@
+/* Indoor & Commercial Cleaning */
+.cleaning-services{padding:86px 0;background:linear-gradient(180deg,#fff,#f7fbff)}
+.cleaning-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.cleaning-card{--cc:#1479df;position:relative;overflow:hidden;padding:24px;border-radius:22px;border:1px solid color-mix(in srgb,var(--cc) 30%,white);background:linear-gradient(145deg,color-mix(in srgb,var(--cc) 12%,white),#fff 72%);box-shadow:0 12px 32px color-mix(in srgb,var(--cc) 14%,transparent);transition:.35s}
+.cleaning-card:nth-child(2){--cc:#17a36a}.cleaning-card:nth-child(3){--cc:#e58d19}.cleaning-card:nth-child(4){--cc:#7d52dd}.cleaning-card:nth-child(5){--cc:#e64b5d}.cleaning-card:nth-child(6){--cc:#06a5b7}.cleaning-card:nth-child(7){--cc:#5967d8}.cleaning-card:nth-child(8){--cc:#198f4d}
+.cleaning-card:hover{transform:translateY(-7px);box-shadow:0 20px 46px color-mix(in srgb,var(--cc) 25%,transparent)}
+.cleaning-icon{width:54px;height:54px;display:grid;place-items:center;border-radius:17px;background:color-mix(in srgb,var(--cc) 14%,white);font-size:25px}
+.cleaning-card h3{font-size:20px;margin:16px 0 7px;color:color-mix(in srgb,var(--cc) 80%,#17211d)}
+.cleaning-card p{color:#5a6861;margin:0 0 13px}.cleaning-card a{font-weight:900;color:var(--cc)}
+@media(max-width:1000px){.cleaning-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.cleaning-grid{grid-template-columns:1fr}.cleaning-services{padding:66px 0}}

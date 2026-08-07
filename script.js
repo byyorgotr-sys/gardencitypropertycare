@@ -125,6 +125,91 @@ if(!reduceMotion){
   services.insertAdjacentElement('afterend',section);
 })();
 
+
+// Indoor & commercial cleaning services (localized automatically)
+(()=>{
+  const anchor=document.querySelector('.recent-work') || document.querySelector('#services');
+  if(!anchor || document.querySelector('#cleaning-services')) return;
+
+  if(!document.querySelector('link[href="/cleaning-services.css"]')){
+    const css=document.createElement('link');
+    css.rel='stylesheet';
+    css.href='/cleaning-services.css';
+    document.head.appendChild(css);
+  }
+
+  const lang=(document.documentElement.lang||'en').toLowerCase();
+  const isEs=lang.startsWith('es');
+  const isZh=lang.startsWith('zh');
+
+  const data=isEs ? {
+    kicker:'Limpieza interior y comercial',
+    title:'Limpieza para hogares y negocios.',
+    intro:'Además del cuidado exterior, ofrecemos servicios de limpieza interior para viviendas, oficinas y propiedades comerciales.',
+    items:[
+      ['🏠','Limpieza de casas','Casas, apartamentos y condominios.','/house-cleaning-richmond.html'],
+      ['🏢','Limpieza de oficinas','Oficinas, salas de reuniones y áreas de trabajo.','/office-cleaning-richmond.html'],
+      ['🏬','Limpieza comercial','Tiendas, restaurantes y espacios comerciales.','/commercial-cleaning-richmond.html'],
+      ['🏭','Limpieza industrial','Fábricas, talleres y espacios industriales.','/industrial-cleaning-richmond.html'],
+      ['📦','Mudanza: entrada / salida','Limpieza antes de entrar o después de salir.','/move-out-cleaning-richmond.html'],
+      ['✨','Limpieza profunda','Limpieza detallada para cocinas, baños, pisos y superficies.','/house-cleaning-richmond.html'],
+      ['🧱','Después de construcción','Polvo, residuos y limpieza final después de obras.','/post-construction-cleaning-richmond.html'],
+      ['🏙️','Áreas comunes','Pasillos, entradas, escaleras y áreas compartidas.','/commercial-cleaning-richmond.html']
+    ]
+  } : isZh ? {
+    kicker:'室内与商业清洁',
+    title:'住宅和商业场所清洁服务。',
+    intro:'除了室外物业维护，我们还提供住宅、办公室和商业物业的室内清洁服务。',
+    items:[
+      ['🏠','住宅清洁','房屋、公寓和共管公寓。','/house-cleaning-richmond.html'],
+      ['🏢','办公室清洁','办公室、会议室和工作区域。','/office-cleaning-richmond.html'],
+      ['🏬','商业清洁','商店、餐厅及其他商业空间。','/commercial-cleaning-richmond.html'],
+      ['🏭','工业 / 工厂清洁','工厂、车间和工业空间。','/industrial-cleaning-richmond.html'],
+      ['📦','入住 / 搬出清洁','入住前或搬出后的全面清洁。','/move-out-cleaning-richmond.html'],
+      ['✨','深度清洁','厨房、浴室、地板和表面的细致清洁。','/house-cleaning-richmond.html'],
+      ['🧱','装修后清洁','清除施工后的灰尘、碎屑并进行最终清洁。','/post-construction-cleaning-richmond.html'],
+      ['🏙️','公共区域清洁','走廊、入口、楼梯及共享空间。','/commercial-cleaning-richmond.html']
+    ]
+  } : {
+    kicker:'Indoor & Commercial Cleaning',
+    title:'Cleaning for homes and businesses.',
+    intro:'Along with exterior property care, we provide indoor cleaning for residential, office, commercial and industrial properties.',
+    items:[
+      ['🏠','House Cleaning','Homes, apartments and condos.','/house-cleaning-richmond.html'],
+      ['🏢','Office Cleaning','Offices, meeting rooms and work areas.','/office-cleaning-richmond.html'],
+      ['🏬','Commercial Cleaning','Retail, restaurants and commercial spaces.','/commercial-cleaning-richmond.html'],
+      ['🏭','Industrial / Factory Cleaning','Factories, workshops and industrial spaces.','/industrial-cleaning-richmond.html'],
+      ['📦','Move-In / Move-Out Cleaning','Cleaning before move-in or after move-out.','/move-out-cleaning-richmond.html'],
+      ['✨','Deep Cleaning','Detailed kitchens, bathrooms, floors and surfaces.','/house-cleaning-richmond.html'],
+      ['🧱','Post-Construction Cleaning','Dust, debris and final cleanup after construction.','/post-construction-cleaning-richmond.html'],
+      ['🏙️','Common Area Cleaning','Hallways, entrances, stairs and shared areas.','/commercial-cleaning-richmond.html']
+    ]
+  };
+
+  const section=document.createElement('section');
+  section.id='cleaning-services';
+  section.className='cleaning-services';
+  section.innerHTML=`
+    <div class="container">
+      <div class="heading">
+        <span class="label">${data.kicker}</span>
+        <h2>${data.title}</h2>
+        <p>${data.intro}</p>
+      </div>
+      <div class="cleaning-grid">
+        ${data.items.map((x,i)=>`
+          <article class="cleaning-card c${i+1}">
+            <div class="cleaning-icon">${x[0]}</div>
+            <h3>${x[1]}</h3>
+            <p>${x[2]}</p>
+            <a href="${x[3]}">${isEs?'Ver servicio':isZh?'查看服务':'View service'} →</a>
+          </article>
+        `).join('')}
+      </div>
+    </div>`;
+  anchor.insertAdjacentElement('afterend',section);
+})();
+
 // Reveal content gently as it enters the viewport
 const revealTargets=document.querySelectorAll('main section:not(.hero), .card, .step, .faq details');
 revealTargets.forEach(el=>el.classList.add('reveal'));

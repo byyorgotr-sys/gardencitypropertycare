@@ -1,0 +1,21 @@
+FINAL CLEANING EXPANSION
+
+Upload ALL files in this folder to the ROOT of the GitHub repository.
+
+Replace:
+- script.js
+- sitemap.xml
+
+Add:
+- cleaning-services.css
+- house-cleaning-richmond.html
+- office-cleaning-richmond.html
+- commercial-cleaning-richmond.html
+- industrial-cleaning-richmond.html
+- move-out-cleaning-richmond.html
+- post-construction-cleaning-richmond.html
+
+Do not delete any existing images, index.html, styles.css, language-nav.css, CNAME, es, or zh.
+
+Commit message:
+Add indoor and commercial cleaning services
