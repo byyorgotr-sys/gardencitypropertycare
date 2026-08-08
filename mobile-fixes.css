@@ -88,9 +88,14 @@
   .faq details{padding:14px 15px !important;}
   .cta{padding:22px !important;border-radius:22px !important;gap:16px !important;}
 
-  /* Bottom action bar: thinner and no content obstruction */
+  /* Bottom action bar: thinner and clearer labels */
   .mobile-bar{left:10px !important;right:10px !important;bottom:8px !important;border-radius:17px !important;padding:4px !important;min-height:60px !important;align-items:stretch !important;}
-  .mobile-bar a{display:flex !important;align-items:center !important;justify-content:center !important;padding:7px 3px !important;font-size:11px !important;line-height:1.15 !important;min-height:52px !important;}
+  .mobile-bar a{display:flex !important;align-items:center !important;justify-content:center !important;padding:7px 3px !important;font-size:0 !important;line-height:1.15 !important;min-height:52px !important;}
+  .mobile-bar a::after{font-size:11px !important;font-weight:900 !important;}
+  .mobile-bar a:nth-child(1)::after{content:'☎ Call';}
+  .mobile-bar a:nth-child(2)::after{content:'✉ Text';}
+  .mobile-bar a:nth-child(3)::after{content:'💬 WhatsApp';}
+  .mobile-bar a:nth-child(4)::after{content:'📝 Free Quote';}
 
   /* Music control stays clear of bottom bar */
   .music-toggle{right:12px !important;bottom:78px !important;transform:scale(.9) !important;transform-origin:bottom right !important;}
@@ -100,5 +105,5 @@
 @media(max-width:380px){
   .hero h1{font-size:28px !important;}
   .heading h2,.split h2,.recent-work h2,.cleaning-services-section h2,#why .split h2{font-size:29px !important;}
-  .mobile-bar a{font-size:10px !important;}
+  .mobile-bar a::after{font-size:10px !important;}
 }
