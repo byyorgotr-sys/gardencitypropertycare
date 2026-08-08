@@ -376,7 +376,8 @@ if('IntersectionObserver' in window && !reduceMotion){
     else await startMusic();
   });
 
-  const unlock=async()=>{
+  const unlock=async(event)=>{
+    if(event?.target && button.contains(event.target)) return;
     const started=await startMusic();
     if(started){
       ['pointerdown','touchstart','keydown'].forEach(type=>
