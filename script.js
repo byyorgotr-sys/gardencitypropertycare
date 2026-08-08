@@ -227,20 +227,20 @@ if('IntersectionObserver' in window && !reduceMotion){
   revealTargets.forEach(el=>el.classList.add('visible'));
 }
 
-// Calm, original background music generated directly in the browser.
+// Original forest bird ambience generated directly in the browser.
 // Audible autoplay is attempted immediately. If the browser blocks it, the
-// soundtrack starts on the visitor's first interaction anywhere on the page.
+// bird sounds begin on the visitor's first interaction anywhere on the page.
 (()=>{
   const lang=(document.documentElement.lang||'en').toLowerCase();
   const copy=lang.startsWith('es') ? {
-    on:'Música: activa', off:'Música: apagada',
-    start:'Activar música tranquila', stop:'Detener música tranquila'
+    on:'Aves: activas', off:'Aves: apagadas',
+    start:'Activar sonidos de aves', stop:'Detener sonidos de aves'
   } : lang.startsWith('zh') ? {
-    on:'音乐：开启', off:'音乐：关闭',
-    start:'开启舒缓音乐', stop:'关闭舒缓音乐'
+    on:'鸟鸣：开启', off:'鸟鸣：关闭',
+    start:'开启森林鸟鸣', stop:'关闭森林鸟鸣'
   } : {
-    on:'Music on', off:'Music off',
-    start:'Turn on calm music', stop:'Turn off calm music'
+    on:'Birds on', off:'Birds off',
+    start:'Turn on forest bird sounds', stop:'Turn off forest bird sounds'
   };
 
   const button=document.createElement('button');
@@ -252,17 +252,8 @@ if('IntersectionObserver' in window && !reduceMotion){
 
   let context;
   let master;
-  let chordTimer;
-  let bellTimer;
+  let flockTimer;
   let playing=false;
-  let chordIndex=0;
-  const chords=[
-    [130.81,164.81,196.00,246.94],
-    [110.00,130.81,164.81,196.00],
-    [87.31,130.81,164.81,220.00],
-    [98.00,123.47,146.83,196.00]
-  ];
-  const voices=[];
 
   function updateButton(){
     button.classList.toggle('is-playing',playing);
@@ -271,114 +262,124 @@ if('IntersectionObserver' in window && !reduceMotion){
     button.querySelector('b').textContent=playing?copy.on:copy.off;
   }
 
-  function makeBell(frequency){
-    if(!context || !master || context.state!=='running' || !playing) return;
-    const now=context.currentTime;
+  function emitNote(start,from,to,duration,pan,level,wave){
+    if(!context||!master) return;
     const oscillator=context.createOscillator();
     const gain=context.createGain();
-    oscillator.type='sine';
-    oscillator.frequency.setValueAtTime(frequency,now);
-    oscillator.frequency.exponentialRampToValueAtTime(frequency*.997,now+3.8);
-    gain.gain.setValueAtTime(.0001,now);
-    gain.gain.exponentialRampToValueAtTime(.028,now+.05);
-    gain.gain.exponentialRampToValueAtTime(.0001,now+3.8);
-    oscillator.connect(gain).connect(master);
-    oscillator.start(now);
-    oscillator.stop(now+4);
+    const panner=context.createStereoPanner?context.createStereoPanner():context.createGain();
+    oscillator.type=wave||'sine';
+    oscillator.frequency.setValueAtTime(Math.max(180,from),start);
+    oscillator.frequency.exponentialRampToValueAtTime(Math.max(180,to),start+duration);
+    gain.gain.setValueAtTime(.0001,start);
+    gain.gain.exponentialRampToValueAtTime(level,start+Math.min(.025,duration*.22));
+    gain.gain.exponentialRampToValueAtTime(.0001,start+duration);
+    if(panner.pan) panner.pan.setValueAtTime(pan,start);
+    oscillator.connect(gain).connect(panner).connect(master);
+    oscillator.start(start);
+    oscillator.stop(start+duration+.04);
   }
 
-  function setChord(index){
-    if(!context) return;
-    const now=context.currentTime;
-    chords[index].forEach((frequency,i)=>{
-      voices[i].frequency.cancelScheduledValues(now);
-      voices[i].frequency.setTargetAtTime(frequency,now,2.2);
-    });
+  function birdCall(kind,start,pan){
+    const pitch=.82+Math.random()*.42;
+    const soft=.018+Math.random()*.018;
+
+    if(kind===0){
+      emitNote(start,1650*pitch,2750*pitch,.14,pan,soft,'sine');
+      emitNote(start+.16,2550*pitch,1850*pitch,.11,pan,soft*.85,'sine');
+      emitNote(start+.29,1750*pitch,2450*pitch,.16,pan,soft*.92,'triangle');
+      return;
+    }
+
+    if(kind===1){
+      const notes=5+Math.floor(Math.random()*4);
+      for(let i=0;i<notes;i++){
+        const base=(2850+Math.random()*650)*pitch;
+        emitNote(start+i*.075,base,base*(1.12+Math.random()*.18),.055,pan,soft*.72,'sine');
+      }
+      return;
+    }
+
+    if(kind===2){
+      emitNote(start,900*pitch,1450*pitch,.28,pan,soft*1.08,'sine');
+      emitNote(start+.37,1350*pitch,820*pitch,.32,pan,soft*.92,'sine');
+      return;
+    }
+
+    const notes=2+Math.floor(Math.random()*4);
+    for(let i=0;i<notes;i++){
+      const base=(1900+Math.random()*1200)*pitch;
+      emitNote(start+i*(.11+Math.random()*.08),base,base*(.78+Math.random()*.65),.09+Math.random()*.08,pan,soft,'triangle');
+    }
+  }
+
+  function scheduleFlock(){
+    clearTimeout(flockTimer);
+    if(!playing||!context||context.state!=='running') return;
+
+    const now=context.currentTime+.04;
+    const birds=5+Math.floor(Math.random()*7);
+    for(let i=0;i<birds;i++){
+      const kind=Math.floor(Math.random()*4);
+      const start=now+Math.random()*1.9;
+      const pan=-.9+Math.random()*1.8;
+      birdCall(kind,start,pan);
+    }
+
+    flockTimer=setTimeout(scheduleFlock,1500+Math.random()*2300);
   }
 
   function buildSound(){
     context=new (window.AudioContext||window.webkitAudioContext)();
     master=context.createGain();
+    const highpass=context.createBiquadFilter();
+    const compressor=context.createDynamicsCompressor();
+
     master.gain.value=0;
+    highpass.type='highpass';
+    highpass.frequency.value=520;
+    highpass.Q.value=.35;
+    compressor.threshold.value=-20;
+    compressor.knee.value=16;
+    compressor.ratio.value=3;
+    compressor.attack.value=.01;
+    compressor.release.value=.3;
 
-    const filter=context.createBiquadFilter();
-    filter.type='lowpass';
-    filter.frequency.value=900;
-    filter.Q.value=.45;
-
-    const delay=context.createDelay(1);
-    const feedback=context.createGain();
-    const wet=context.createGain();
-    delay.delayTime.value=.34;
-    feedback.gain.value=.18;
-    wet.gain.value=.16;
-
-    filter.connect(master);
-    filter.connect(delay);
-    delay.connect(feedback).connect(delay);
-    delay.connect(wet).connect(master);
-    master.connect(context.destination);
-
-    chords[0].forEach((frequency,i)=>{
-      const oscillator=context.createOscillator();
-      const gain=context.createGain();
-      oscillator.type=i%2?'sine':'triangle';
-      oscillator.frequency.value=frequency;
-      gain.gain.value=i<2?.022:.014;
-      oscillator.connect(gain).connect(filter);
-      oscillator.start();
-      voices.push(oscillator);
-    });
-
-    const breath=context.createOscillator();
-    const breathDepth=context.createGain();
-    breath.type='sine';
-    breath.frequency.value=.07;
-    breathDepth.gain.value=.006;
-    breath.connect(breathDepth).connect(master.gain);
-    breath.start();
-
-    chordTimer=setInterval(()=>{
-      chordIndex=(chordIndex+1)%chords.length;
-      setChord(chordIndex);
-    },9000);
-    bellTimer=setInterval(()=>{
-      const notes=chords[chordIndex];
-      makeBell(notes[Math.floor(Math.random()*notes.length)]*2);
-    },4500);
+    master.connect(highpass).connect(compressor).connect(context.destination);
   }
 
-  async function startMusic(){
+  async function startBirds(){
     try{
       if(!context) buildSound();
       await context.resume();
       if(context.state!=='running') return false;
       playing=true;
       master.gain.cancelScheduledValues(context.currentTime);
-      master.gain.setTargetAtTime(.075,context.currentTime,.8);
+      master.gain.setTargetAtTime(.42,context.currentTime,.65);
       updateButton();
+      scheduleFlock();
       return true;
     }catch(error){
       return false;
     }
   }
 
-  function stopMusic(){
+  function stopBirds(){
     if(!context) return;
     playing=false;
+    clearTimeout(flockTimer);
     master.gain.cancelScheduledValues(context.currentTime);
-    master.gain.setTargetAtTime(0,context.currentTime,.35);
+    master.gain.setTargetAtTime(0,context.currentTime,.25);
     updateButton();
   }
 
   button.addEventListener('click',async()=>{
-    if(playing) stopMusic();
-    else await startMusic();
+    if(playing) stopBirds();
+    else await startBirds();
   });
 
   const unlock=async(event)=>{
-    if(event?.target && button.contains(event.target)) return;
-    const started=await startMusic();
+    if(event?.target&&button.contains(event.target)) return;
+    const started=await startBirds();
     if(started){
       ['pointerdown','touchstart','keydown'].forEach(type=>
         document.removeEventListener(type,unlock,true)
@@ -391,12 +392,15 @@ if('IntersectionObserver' in window && !reduceMotion){
 
   document.addEventListener('visibilitychange',()=>{
     if(!context) return;
-    if(document.hidden && context.state==='running') context.suspend();
-    else if(!document.hidden && playing) context.resume().catch(()=>{});
+    if(document.hidden&&context.state==='running'){
+      context.suspend();
+    }else if(!document.hidden&&playing){
+      context.resume().then(scheduleFlock).catch(()=>{});
+    }
   });
 
   updateButton();
-  startMusic();
+  startBirds();
 })();
 
 // Welcoming hero scenes rotate automatically and can also be selected manually.
