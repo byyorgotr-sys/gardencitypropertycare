@@ -344,3 +344,44 @@ if('IntersectionObserver' in window && !reduceMotion){
   document.addEventListener('visibilitychange',()=>document.hidden?clearInterval(timer):start());
   start();
 })();
+
+// Show an on-site confirmation after FormSubmit redirects back successfully.
+(()=>{
+  const params=new URLSearchParams(window.location.search);
+  if(params.get('quote')!=='sent') return;
+
+  const leadForm=document.querySelector('#leadForm');
+  if(!leadForm) return;
+
+  const lang=(document.documentElement.lang||'en').toLowerCase();
+  const copy=lang.startsWith('es') ? {
+    title:'¡Gracias! Recibimos su solicitud.',
+    text:'Revisaremos los detalles y nos pondremos en contacto con usted lo antes posible.',
+    button:'Enviar otra solicitud'
+  } : lang.startsWith('zh') ? {
+    title:'谢谢！我们已收到您的请求。',
+    text:'我们会尽快查看您的信息并与您联系。',
+    button:'再次提交请求'
+  } : {
+    title:'Thank you! We received your request.',
+    text:'We’ll review the details and get back to you as soon as possible.',
+    button:'Send another request'
+  };
+
+  const confirmation=document.createElement('div');
+  confirmation.setAttribute('role','status');
+  confirmation.setAttribute('aria-live','polite');
+  confirmation.style.cssText='background:#fff;border:1px solid rgba(8,42,86,.12);border-radius:22px;padding:2rem;box-shadow:0 18px 45px rgba(8,42,86,.10);text-align:center;';
+  confirmation.innerHTML=`
+    <div style="font-size:2.3rem;margin-bottom:.65rem" aria-hidden="true">✅</div>
+    <h3 style="margin:.2rem 0 .65rem;font-size:1.55rem">${copy.title}</h3>
+    <p style="margin:0 auto 1.25rem;max-width:34rem">${copy.text}</p>
+    <a class="btn primary" href="${window.location.pathname}#quote">${copy.button}</a>`;
+
+  leadForm.replaceWith(confirmation);
+  confirmation.scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'center'});
+
+  if(window.history?.replaceState){
+    window.history.replaceState({},document.title,window.location.pathname+'#quote');
+  }
+})();
