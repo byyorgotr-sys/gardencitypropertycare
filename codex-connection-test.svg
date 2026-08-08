@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Codex GitHub connection successful</title>
+  <desc id="desc">Garden City Property Care repository write test</desc>
+  <rect width="1200" height="630" rx="48" fill="#f3f7f4"/>
+  <rect x="70" y="70" width="1060" height="490" rx="36" fill="#07553d"/>
+  <circle cx="600" cy="235" r="78" fill="#ffffff"/>
+  <path d="M560 235h80M600 195v80" stroke="#07553d" stroke-width="18" stroke-linecap="round"/>
+  <text x="600" y="370" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="700" fill="#ffffff">Codex bağlantısı başarılı</text>
+  <text x="600" y="430" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="30" fill="#d7eee5">Garden City Property Care · GitHub yazma testi</text>
+</svg>
