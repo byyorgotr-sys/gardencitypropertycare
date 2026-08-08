@@ -233,13 +233,13 @@ if('IntersectionObserver' in window && !reduceMotion){
   const lang=(document.documentElement.lang||'en').toLowerCase();
   const copy=lang.startsWith('es') ? {
     button:'Música tranquila', title:'Un momento para respirar',
-    text:'Passenger — Let Her Go', spotify:'Escuchar en Spotify', youtube:'Ver en YouTube', close:'Cerrar'
+    text:'Passenger — Let Her Go', youtube:'Reproducir aquí', close:'Cerrar'
   } : lang.startsWith('zh') ? {
     button:'舒缓音乐', title:'放松片刻',
-    text:'Passenger — Let Her Go', spotify:'在 Spotify 收听', youtube:'在 YouTube 观看', close:'关闭'
+    text:'Passenger — Let Her Go', youtube:'在此播放', close:'关闭'
   } : {
     button:'Calm music', title:'A moment to breathe',
-    text:'Passenger — Let Her Go', spotify:'Listen on Spotify', youtube:'Watch on YouTube', close:'Close'
+    text:'Passenger — Let Her Go', youtube:'Play here', close:'Close'
   };
 
   const button=document.createElement('button');
@@ -257,8 +257,7 @@ if('IntersectionObserver' in window && !reduceMotion){
     <span class="music-art" aria-hidden="true">♫</span>
     <div class="music-copy"><small>${copy.title}</small><strong>${copy.text}</strong></div>
     <div class="music-actions">
-      <a class="spotify" href="https://open.spotify.com/track/2jyjhRf6DVbMPU5zxagN2h" target="_blank" rel="noopener noreferrer">${copy.spotify}</a>
-      <a class="youtube" href="https://www.youtube.com/watch?v=RBumgq5yVrA" target="_blank" rel="noopener noreferrer">${copy.youtube}</a>
+      <button class="youtube" type="button">▶ ${copy.youtube}</button>
     </div>`;
   document.body.append(panel,button);
 
@@ -268,5 +267,25 @@ if('IntersectionObserver' in window && !reduceMotion){
     button.setAttribute('aria-expanded',String(open));
   }
   button.addEventListener('click',()=>setOpen(!panel.classList.contains('show')));
-  panel.querySelector('.music-close').addEventListener('click',()=>setOpen(false));
+  function playVideo(){
+    if(panel.querySelector('.music-video')) return;
+    const frame=document.createElement('div');
+    frame.className='music-video';
+    frame.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/RBumgq5yVrA?autoplay=1&rel=0" title="Passenger - Let Her Go" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+    panel.appendChild(frame);
+    panel.querySelector('.youtube')?.remove();
+  }
+  panel.querySelector('.youtube').addEventListener('click',playVideo);
+  panel.querySelector('.music-close').addEventListener('click',()=>{
+    panel.querySelector('.music-video')?.remove();
+    if(!panel.querySelector('.youtube')){
+      const play=document.createElement('button');
+      play.className='youtube';
+      play.type='button';
+      play.textContent=`▶ ${copy.youtube}`;
+      play.addEventListener('click',playVideo);
+      panel.querySelector('.music-actions').appendChild(play);
+    }
+    setOpen(false);
+  });
 })();
