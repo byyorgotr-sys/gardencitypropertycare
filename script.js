@@ -1,3 +1,8 @@
+// Always move visitors from an insecure HTTP address to HTTPS.
+if(window.location.protocol==='http:'){
+  window.location.replace('https://'+window.location.host+window.location.pathname+window.location.search+window.location.hash);
+}
+
 const menu=document.querySelector('.menu');
 const links=document.querySelector('.links');
 menu?.addEventListener('click',()=>links.classList.toggle('open'));
