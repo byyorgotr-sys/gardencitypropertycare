@@ -232,24 +232,24 @@ if('IntersectionObserver' in window && !reduceMotion){
   revealTargets.forEach(el=>el.classList.add('visible'));
 }
 
-// Exact forest-bird recording supplied by the site owner, played through
+// Exact romantic Spanish-guitar recording supplied by the site owner, played through
 // YouTube's official embedded player. Autoplay is attempted immediately and
 // retried on the visitor's first interaction when the browser blocks sound.
 (()=>{
-  const VIDEO_ID='LUbU6jp2VhE';
+  const VIDEO_ID='UiLbRkULcFE';
   const lang=(document.documentElement.lang||'en').toLowerCase();
   const copy=lang.startsWith('es') ? {
-    on:'Aves: activas', off:'Aves: apagadas',
-    title:'Sonidos naturales de aves', source:'Grabación de naturaleza de 25 minutos',
-    start:'Reproducir sonidos de aves', stop:'Pausar sonidos de aves', close:'Cerrar'
+    on:'Guitarra: activa', off:'Guitarra: apagada',
+    title:'Guitarra española romántica', source:'Grabación original de YouTube',
+    start:'Reproducir guitarra', stop:'Pausar guitarra', close:'Cerrar'
   } : lang.startsWith('zh') ? {
-    on:'鸟鸣：开启', off:'鸟鸣：关闭',
-    title:'自然森林鸟鸣', source:'25 分钟自然录音',
-    start:'播放鸟鸣', stop:'暂停鸟鸣', close:'关闭'
+    on:'吉他：开启', off:'吉他：关闭',
+    title:'浪漫西班牙吉他', source:'YouTube 原始录音',
+    start:'播放吉他', stop:'暂停吉他', close:'关闭'
   } : {
-    on:'Birds on', off:'Birds off',
-    title:'Natural forest birds', source:'25-minute nature recording',
-    start:'Play bird sounds', stop:'Pause bird sounds', close:'Close'
+    on:'Guitar on', off:'Guitar off',
+    title:'Romantic Spanish guitar', source:'Original YouTube recording',
+    start:'Play Spanish guitar', stop:'Pause Spanish guitar', close:'Close'
   };
 
   const button=document.createElement('button');
@@ -260,13 +260,13 @@ if('IntersectionObserver' in window && !reduceMotion){
 
   const panel=document.createElement('aside');
   panel.className='music-panel show';
-  panel.id='forest-bird-panel';
+  panel.id='spanish-guitar-panel';
   panel.setAttribute('aria-hidden','false');
   panel.innerHTML=
     '<button class="music-close" type="button" aria-label="'+copy.close+'">×</button>'+
-    '<span class="music-art" aria-hidden="true">🐦</span>'+
+    '<span class="music-art" aria-hidden="true">🎸</span>'+
     '<div class="music-copy"><small>'+copy.source+'</small><strong>'+copy.title+'</strong></div>'+
-    '<div class="music-video"><div id="forest-bird-player"></div></div>';
+    '<div class="music-video"><div id="spanish-guitar-player"></div></div>';
 
   document.body.append(panel,button);
 
@@ -309,7 +309,7 @@ if('IntersectionObserver' in window && !reduceMotion){
   );
 
   window.onYouTubeIframeAPIReady=()=>{
-    player=new window.YT.Player('forest-bird-player',{
+    player=new window.YT.Player('spanish-guitar-player',{
       width:'100%',
       height:'100%',
       videoId:VIDEO_ID,
