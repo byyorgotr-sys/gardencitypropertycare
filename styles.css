@@ -771,8 +771,9 @@ section{padding:92px 0;scroll-margin-top:76px}.cream{background:linear-gradient(
 .music-art{display:grid;place-items:center;width:48px;height:48px;border-radius:16px;background:linear-gradient(135deg,#d9f4df,#f6e7ca);color:#0d6848;font-size:23px}
 .music-copy{display:flex;flex-direction:column;gap:4px;padding-right:25px}.music-copy small{color:#678078;font-weight:750}.music-copy strong{font-size:15px}
 .music-close{position:absolute;right:10px;top:8px;border:0;background:transparent;color:#65766f;font-size:22px;cursor:pointer}
-.music-actions{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:4px}
-.music-actions a{display:block;padding:10px 12px;border-radius:999px;text-align:center;text-decoration:none;color:#fff;font-size:12px;font-weight:850}.music-actions .spotify{background:#168d4b}.music-actions .youtube{background:#d92d2d}.music-actions a:hover{filter:brightness(1.08)}
+.music-actions{grid-column:1/-1;display:grid;gap:9px;margin-top:4px}
+.music-actions button{border:0;padding:11px 14px;border-radius:999px;text-align:center;color:#fff;font-size:12px;font-weight:850;cursor:pointer}.music-actions .youtube{background:#d92d2d}.music-actions button:hover{filter:brightness(1.08)}
+.music-video{grid-column:1/-1;overflow:hidden;border-radius:14px;aspect-ratio:16/9;margin-top:5px;background:#000}.music-video iframe{display:block;width:100%;height:100%;border:0}
 @media(max-width:640px){
   .music-toggle{right:13px;bottom:82px;padding:8px}.music-toggle b{display:none}
   .music-panel{right:13px;bottom:134px;width:calc(100vw - 26px)}
