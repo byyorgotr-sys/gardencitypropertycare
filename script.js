@@ -289,3 +289,58 @@ if('IntersectionObserver' in window && !reduceMotion){
     setOpen(false);
   });
 })();
+
+// Welcoming hero scenes rotate automatically and can also be selected manually.
+(()=>{
+  const hero=document.querySelector('.hero');
+  if(!hero || hero.querySelector('.hero-slides')) return;
+
+  const descriptions=[
+    'Professional cleaner caring for a bright Richmond home',
+    'Friendly local property care team ready to help',
+    'Property maintenance team caring for a garden and walkway',
+    'Team leader greeting a homeowner after property care'
+  ];
+  const slides=document.createElement('div');
+  slides.className='hero-slides';
+  slides.setAttribute('aria-hidden','true');
+  slides.innerHTML=descriptions.map((description,index)=>
+    `<div class="hero-slide${index===0?' is-active':''}" role="img" aria-label="${description}"></div>`
+  ).join('');
+
+  const dots=document.createElement('div');
+  dots.className='hero-dots';
+  dots.setAttribute('aria-label','Featured property care scenes');
+  dots.innerHTML=descriptions.map((description,index)=>
+    `<button class="hero-dot${index===0?' is-active':''}" type="button" aria-label="Show scene ${index+1}: ${description}" aria-pressed="${index===0}"></button>`
+  ).join('');
+  hero.prepend(slides);
+  hero.append(dots);
+
+  const slideItems=[...slides.children];
+  const dotItems=[...dots.children];
+  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let current=0;
+  let timer;
+
+  function show(index){
+    current=(index+slideItems.length)%slideItems.length;
+    slideItems.forEach((slide,i)=>slide.classList.toggle('is-active',i===current));
+    dotItems.forEach((dot,i)=>{
+      dot.classList.toggle('is-active',i===current);
+      dot.setAttribute('aria-pressed',String(i===current));
+    });
+  }
+  function start(){
+    if(reduceMotion) return;
+    clearInterval(timer);
+    timer=setInterval(()=>show(current+1),3200);
+  }
+  dotItems.forEach((dot,index)=>dot.addEventListener('click',()=>{show(index);start()}));
+  hero.addEventListener('mouseenter',()=>clearInterval(timer));
+  hero.addEventListener('mouseleave',start);
+  hero.addEventListener('focusin',()=>clearInterval(timer));
+  hero.addEventListener('focusout',start);
+  document.addEventListener('visibilitychange',()=>document.hidden?clearInterval(timer):start());
+  start();
+})();
