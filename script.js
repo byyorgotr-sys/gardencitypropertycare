@@ -236,7 +236,7 @@ if('IntersectionObserver' in window && !reduceMotion){
 // YouTube's official embedded player. Autoplay is attempted immediately and
 // retried on the visitor's first interaction when the browser blocks sound.
 (()=>{
-  const VIDEO_ID='UiLbRkULcFE';
+  const VIDEO_ID='7I6i0LAPC8w';
   const lang=(document.documentElement.lang||'en').toLowerCase();
   const copy=lang.startsWith('es') ? {
     on:'Guitarra: activa', off:'Guitarra: apagada',
