@@ -1,0 +1,104 @@
+/* Mobile polish pass - 2026-08-08 */
+/* Fix the missing Why Garden City image: repository contains SVG, not WEBP. */
+#why .photo{background-image:url('/why-garden-city.svg') !important;background-position:center !important;background-size:cover !important;background-repeat:no-repeat !important;}
+
+@media(max-width:640px){
+  body{padding-bottom:76px;}
+  .container{width:min(100% - 30px,1160px) !important;}
+
+  /* Header */
+  .nav{min-height:64px !important;}
+  .logo{width:42px !important;height:42px !important;border-radius:13px !important;font-size:20px !important;}
+  .brand strong{font-size:17px !important;line-height:1.05 !important;}
+  .brand small{font-size:9px !important;letter-spacing:.12em !important;}
+
+  /* Hero: keep impact, reduce vertical dominance */
+  .hero,.hero-grid{height:auto !important;max-height:none !important;min-height:0 !important;}
+  .hero-grid{padding:18px 0 16px !important;}
+  .hero h1{font-size:31px !important;line-height:1.02 !important;margin:5px 0 7px !important;max-width:96% !important;}
+  .hero p{font-size:12.5px !important;line-height:1.32 !important;max-width:96% !important;}
+  .hero .kicker{font-size:8px !important;padding:3px 8px !important;}
+  .hero .actions{margin-top:8px !important;}
+  .hero .btn{min-height:36px !important;font-size:12px !important;padding:0 13px !important;}
+  .hero .outline{display:none !important;}
+  .hero-dots{bottom:5px !important;}
+
+  /* Trust blocks */
+  .trust-strip{padding:0 !important;}
+  .trust-grid{grid-template-columns:1fr 1fr !important;border-radius:0 0 18px 18px !important;}
+  .trust-grid>div{min-height:64px !important;padding:10px 12px !important;gap:9px !important;}
+  .trust-grid b{font-size:20px !important;}
+  .trust-grid strong{font-size:12px !important;line-height:1.15 !important;}
+  .trust-grid small{display:none !important;}
+
+  /* General mobile rhythm */
+  section{padding:42px 0 !important;}
+  #services{padding-top:22px !important;padding-bottom:42px !important;}
+  .heading{margin-bottom:20px !important;}
+  .label,.recent-kicker,.section-label{font-size:10px !important;letter-spacing:.13em !important;}
+  .heading h2,.split h2,.cta h2,.recent-work h2,.cleaning-services-section h2{font-size:32px !important;line-height:1.04 !important;margin:7px 0 10px !important;letter-spacing:-.035em !important;}
+  .heading p,.split p,.recent-intro,.cleaning-services-section p{font-size:15px !important;line-height:1.45 !important;margin:0 !important;}
+
+  /* Service cards: shorter and denser */
+  .cards{gap:14px !important;}
+  .cards .card{padding:22px 22px !important;min-height:0 !important;border-radius:20px !important;}
+  .cards .card .icon{width:50px !important;height:50px !important;border-radius:16px !important;font-size:22px !important;}
+  .cards .card h3{font-size:22px !important;line-height:1.12 !important;margin:16px 0 7px !important;}
+  .cards .card p{font-size:15px !important;line-height:1.5 !important;margin:0 0 13px !important;}
+  .cards .card a{font-size:15px !important;}
+  .cards .card::after{width:125px !important;height:125px !important;right:-45px !important;bottom:-48px !important;}
+
+  /* Recent work gallery */
+  .recent-work{padding:42px 0 !important;}
+  .recent-work .recent-head{margin-bottom:18px !important;gap:12px !important;}
+  .recent-grid{gap:14px !important;}
+  .recent-item,.recent-item img{min-height:205px !important;}
+  .recent-item{border-radius:20px !important;}
+  .recent-caption{left:15px !important;right:15px !important;bottom:13px !important;}
+  .recent-caption strong{font-size:16px !important;}
+  .recent-note{margin-top:12px !important;font-size:12px !important;}
+
+  /* Cleaning section */
+  .cleaning-services-section{padding:42px 0 !important;}
+  .cleaning-services-section .section-heading{margin:0 0 20px !important;text-align:left !important;}
+  .cleaning-cards{gap:14px !important;margin-top:20px !important;}
+  .cleaning-card{min-height:0 !important;padding:22px 20px !important;border-radius:20px !important;}
+  .cleaning-icon{font-size:28px !important;margin-bottom:12px !important;}
+  .cleaning-card h3{font-size:22px !important;margin:0 0 8px !important;}
+  .cleaning-card p{font-size:14px !important;line-height:1.45 !important;}
+
+  /* Why us: restore image and remove oversized typography */
+  #why{padding:42px 0 !important;}
+  #why .split{gap:24px !important;}
+  #why .photo{height:230px !important;min-height:230px !important;border-radius:22px !important;}
+  #why .split h2{font-size:32px !important;line-height:1.04 !important;margin:7px 0 10px !important;}
+  #why .checks{gap:10px !important;margin-top:18px !important;}
+  #why .check{padding:14px 15px !important;border-radius:14px !important;}
+  #why .check strong{font-size:16px !important;}
+  #why .check span{font-size:14px !important;line-height:1.4 !important;}
+
+  /* Other sections */
+  .steps{gap:12px !important;}
+  .step{padding:22px !important;border-radius:18px !important;}
+  .step b{font-size:30px !important;}
+  .step h3{font-size:20px !important;margin:7px 0 !important;}
+  .step p{font-size:14px !important;margin:0 !important;}
+  .locations{gap:7px !important;}
+  .locations span{padding:8px 11px !important;font-size:13px !important;}
+  .faq details{padding:14px 15px !important;}
+  .cta{padding:22px !important;border-radius:22px !important;gap:16px !important;}
+
+  /* Bottom action bar: thinner and no content obstruction */
+  .mobile-bar{left:10px !important;right:10px !important;bottom:8px !important;border-radius:17px !important;padding:4px !important;min-height:60px !important;align-items:stretch !important;}
+  .mobile-bar a{display:flex !important;align-items:center !important;justify-content:center !important;padding:7px 3px !important;font-size:11px !important;line-height:1.15 !important;min-height:52px !important;}
+
+  /* Music control stays clear of bottom bar */
+  .music-toggle{right:12px !important;bottom:78px !important;transform:scale(.9) !important;transform-origin:bottom right !important;}
+  .music-panel{right:12px !important;bottom:126px !important;width:calc(100vw - 24px) !important;}
+}
+
+@media(max-width:380px){
+  .hero h1{font-size:28px !important;}
+  .heading h2,.split h2,.recent-work h2,.cleaning-services-section h2,#why .split h2{font-size:29px !important;}
+  .mobile-bar a{font-size:10px !important;}
+}
