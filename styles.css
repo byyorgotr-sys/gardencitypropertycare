@@ -723,8 +723,8 @@ section{padding:92px 0;scroll-margin-top:76px}.cream{background:linear-gradient(
   }
 }
 
-/* Optional garden ambience controls */
-.ambient-toggle{
+/* Licensed streaming music recommendation */
+.music-toggle{
   position:fixed;
   right:20px;
   bottom:20px;
@@ -744,21 +744,19 @@ section{padding:92px 0;scroll-margin-top:76px}.cream{background:linear-gradient(
   font:700 12px/1.15 Inter,system-ui,sans-serif;
   transition:transform .25s,background .25s,box-shadow .25s;
 }
-.ambient-toggle:hover{transform:translateY(-2px);box-shadow:0 18px 42px rgba(3,35,25,.34)}
-.ambient-toggle span{display:grid;place-items:center;width:27px;height:27px;border-radius:50%;background:rgba(255,255,255,.16);font-size:15px}
-.ambient-toggle.is-on{background:linear-gradient(135deg,#0a6b48,#17a96b)}
-.ambient-toggle.is-on span{animation:ambientPulse 1.8s ease-in-out infinite}
-.ambient-prompt{
+.music-toggle:hover{transform:translateY(-2px);box-shadow:0 18px 42px rgba(3,35,25,.34)}
+.music-toggle span{display:grid;place-items:center;width:27px;height:27px;border-radius:50%;background:rgba(255,255,255,.16);font-size:15px}
+.music-panel{
   position:fixed;
   right:20px;
   bottom:78px;
   z-index:81;
   display:grid;
-  grid-template-columns:auto 1fr auto auto;
+  grid-template-columns:auto 1fr;
   align-items:center;
   gap:10px;
-  width:min(430px,calc(100vw - 40px));
-  padding:13px 13px 13px 16px;
+  width:min(390px,calc(100vw - 40px));
+  padding:18px;
   border:1px solid #dce9e1;
   border-radius:18px;
   background:rgba(255,255,255,.97);
@@ -769,13 +767,13 @@ section{padding:92px 0;scroll-margin-top:76px}.cream{background:linear-gradient(
   pointer-events:none;
   transition:opacity .35s,transform .35s;
 }
-.ambient-prompt.show{opacity:1;transform:none;pointer-events:auto}
-.ambient-prompt>span{font-size:22px}.ambient-prompt p{margin:0;font-size:13px;font-weight:750;line-height:1.35}
-.ambient-prompt button{border:0;border-radius:999px;padding:9px 13px;background:#0d754f;color:#fff;font-weight:800;cursor:pointer}
-.ambient-prompt [data-sound-close]{padding:5px 8px;background:transparent;color:#66766f;font-size:19px}
-@keyframes ambientPulse{50%{box-shadow:0 0 0 6px rgba(255,255,255,.1);transform:scale(1.04)}}
+.music-panel.show{opacity:1;transform:none;pointer-events:auto}
+.music-art{display:grid;place-items:center;width:48px;height:48px;border-radius:16px;background:linear-gradient(135deg,#d9f4df,#f6e7ca);color:#0d6848;font-size:23px}
+.music-copy{display:flex;flex-direction:column;gap:4px;padding-right:25px}.music-copy small{color:#678078;font-weight:750}.music-copy strong{font-size:15px}
+.music-close{position:absolute;right:10px;top:8px;border:0;background:transparent;color:#65766f;font-size:22px;cursor:pointer}
+.music-actions{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:4px}
+.music-actions a{display:block;padding:10px 12px;border-radius:999px;text-align:center;text-decoration:none;color:#fff;font-size:12px;font-weight:850}.music-actions .spotify{background:#168d4b}.music-actions .youtube{background:#d92d2d}.music-actions a:hover{filter:brightness(1.08)}
 @media(max-width:640px){
-  .ambient-toggle{right:13px;bottom:82px}.ambient-toggle b{display:none}
-  .ambient-toggle{padding:8px}.ambient-prompt{right:13px;bottom:134px;width:calc(100vw - 26px);grid-template-columns:auto 1fr auto}.ambient-prompt [data-sound-close]{position:absolute;right:4px;top:-36px;background:#fff;box-shadow:0 5px 15px #0002}.ambient-prompt button{font-size:12px;padding:8px 10px}
+  .music-toggle{right:13px;bottom:82px;padding:8px}.music-toggle b{display:none}
+  .music-panel{right:13px;bottom:134px;width:calc(100vw - 26px)}
 }
-@media(prefers-reduced-motion:reduce){.ambient-toggle.is-on span{animation:none}}
