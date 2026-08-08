@@ -232,20 +232,24 @@ if('IntersectionObserver' in window && !reduceMotion){
   revealTargets.forEach(el=>el.classList.add('visible'));
 }
 
-// Original forest bird ambience generated directly in the browser.
-// Audible autoplay is attempted immediately. If the browser blocks it, the
-// bird sounds begin on the visitor's first interaction anywhere on the page.
+// Exact forest-bird recording supplied by the site owner, played through
+// YouTube's official embedded player. Autoplay is attempted immediately and
+// retried on the visitor's first interaction when the browser blocks sound.
 (()=>{
+  const VIDEO_ID='LUbU6jp2VhE';
   const lang=(document.documentElement.lang||'en').toLowerCase();
   const copy=lang.startsWith('es') ? {
     on:'Aves: activas', off:'Aves: apagadas',
-    start:'Activar sonidos de aves', stop:'Detener sonidos de aves'
+    title:'Sonidos naturales de aves', source:'Grabación de naturaleza de 25 minutos',
+    start:'Reproducir sonidos de aves', stop:'Pausar sonidos de aves', close:'Cerrar'
   } : lang.startsWith('zh') ? {
     on:'鸟鸣：开启', off:'鸟鸣：关闭',
-    start:'开启森林鸟鸣', stop:'关闭森林鸟鸣'
+    title:'自然森林鸟鸣', source:'25 分钟自然录音',
+    start:'播放鸟鸣', stop:'暂停鸟鸣', close:'关闭'
   } : {
     on:'Birds on', off:'Birds off',
-    start:'Turn on forest bird sounds', stop:'Turn off forest bird sounds'
+    title:'Natural forest birds', source:'25-minute nature recording',
+    start:'Play bird sounds', stop:'Pause bird sounds', close:'Close'
   };
 
   const button=document.createElement('button');
@@ -253,12 +257,28 @@ if('IntersectionObserver' in window && !reduceMotion){
   button.type='button';
   button.setAttribute('aria-pressed','false');
   button.innerHTML='<span aria-hidden="true">♫</span><b>'+copy.off+'</b>';
-  document.body.appendChild(button);
 
-  let context;
-  let master;
-  let flockTimer;
+  const panel=document.createElement('aside');
+  panel.className='music-panel show';
+  panel.id='forest-bird-panel';
+  panel.setAttribute('aria-hidden','false');
+  panel.innerHTML=
+    '<button class="music-close" type="button" aria-label="'+copy.close+'">×</button>'+
+    '<span class="music-art" aria-hidden="true">🐦</span>'+
+    '<div class="music-copy"><small>'+copy.source+'</small><strong>'+copy.title+'</strong></div>'+
+    '<div class="music-video"><div id="forest-bird-player"></div></div>';
+
+  document.body.append(panel,button);
+
+  let player;
+  let playerReady=false;
   let playing=false;
+  let userClosed=false;
+
+  function setOpen(open){
+    panel.classList.toggle('show',open);
+    panel.setAttribute('aria-hidden',String(!open));
+  }
 
   function updateButton(){
     button.classList.toggle('is-playing',playing);
@@ -267,145 +287,91 @@ if('IntersectionObserver' in window && !reduceMotion){
     button.querySelector('b').textContent=playing?copy.on:copy.off;
   }
 
-  function emitNote(start,from,to,duration,pan,level,wave){
-    if(!context||!master) return;
-    const oscillator=context.createOscillator();
-    const gain=context.createGain();
-    const panner=context.createStereoPanner?context.createStereoPanner():context.createGain();
-    oscillator.type=wave||'sine';
-    oscillator.frequency.setValueAtTime(Math.max(180,from),start);
-    oscillator.frequency.exponentialRampToValueAtTime(Math.max(180,to),start+duration);
-    gain.gain.setValueAtTime(.0001,start);
-    gain.gain.exponentialRampToValueAtTime(level,start+Math.min(.025,duration*.22));
-    gain.gain.exponentialRampToValueAtTime(.0001,start+duration);
-    if(panner.pan) panner.pan.setValueAtTime(pan,start);
-    oscillator.connect(gain).connect(panner).connect(master);
-    oscillator.start(start);
-    oscillator.stop(start+duration+.04);
+  function removeUnlockListeners(){
+    ['pointerdown','touchstart','keydown'].forEach(type=>
+      document.removeEventListener(type,unlock,true)
+    );
   }
 
-  function birdCall(kind,start,pan){
-    const pitch=.82+Math.random()*.42;
-    const soft=.018+Math.random()*.018;
-
-    if(kind===0){
-      emitNote(start,1650*pitch,2750*pitch,.14,pan,soft,'sine');
-      emitNote(start+.16,2550*pitch,1850*pitch,.11,pan,soft*.85,'sine');
-      emitNote(start+.29,1750*pitch,2450*pitch,.16,pan,soft*.92,'triangle');
-      return;
-    }
-
-    if(kind===1){
-      const notes=5+Math.floor(Math.random()*4);
-      for(let i=0;i<notes;i++){
-        const base=(2850+Math.random()*650)*pitch;
-        emitNote(start+i*.075,base,base*(1.12+Math.random()*.18),.055,pan,soft*.72,'sine');
-      }
-      return;
-    }
-
-    if(kind===2){
-      emitNote(start,900*pitch,1450*pitch,.28,pan,soft*1.08,'sine');
-      emitNote(start+.37,1350*pitch,820*pitch,.32,pan,soft*.92,'sine');
-      return;
-    }
-
-    const notes=2+Math.floor(Math.random()*4);
-    for(let i=0;i<notes;i++){
-      const base=(1900+Math.random()*1200)*pitch;
-      emitNote(start+i*(.11+Math.random()*.08),base,base*(.78+Math.random()*.65),.09+Math.random()*.08,pan,soft,'triangle');
-    }
+  function tryPlay(){
+    if(!playerReady||userClosed) return;
+    setOpen(true);
+    try{ player.playVideo(); }catch(error){}
   }
 
-  function scheduleFlock(){
-    clearTimeout(flockTimer);
-    if(!playing||!context||context.state!=='running') return;
-
-    const now=context.currentTime+.04;
-    const birds=5+Math.floor(Math.random()*7);
-    for(let i=0;i<birds;i++){
-      const kind=Math.floor(Math.random()*4);
-      const start=now+Math.random()*1.9;
-      const pan=-.9+Math.random()*1.8;
-      birdCall(kind,start,pan);
-    }
-
-    flockTimer=setTimeout(scheduleFlock,1500+Math.random()*2300);
-  }
-
-  function buildSound(){
-    context=new (window.AudioContext||window.webkitAudioContext)();
-    master=context.createGain();
-    const highpass=context.createBiquadFilter();
-    const compressor=context.createDynamicsCompressor();
-
-    master.gain.value=0;
-    highpass.type='highpass';
-    highpass.frequency.value=520;
-    highpass.Q.value=.35;
-    compressor.threshold.value=-20;
-    compressor.knee.value=16;
-    compressor.ratio.value=3;
-    compressor.attack.value=.01;
-    compressor.release.value=.3;
-
-    master.connect(highpass).connect(compressor).connect(context.destination);
-  }
-
-  async function startBirds(){
-    try{
-      if(!context) buildSound();
-      await context.resume();
-      if(context.state!=='running') return false;
-      playing=true;
-      master.gain.cancelScheduledValues(context.currentTime);
-      master.gain.setTargetAtTime(.42,context.currentTime,.65);
-      updateButton();
-      scheduleFlock();
-      return true;
-    }catch(error){
-      return false;
-    }
-  }
-
-  function stopBirds(){
-    if(!context) return;
-    playing=false;
-    clearTimeout(flockTimer);
-    master.gain.cancelScheduledValues(context.currentTime);
-    master.gain.setTargetAtTime(0,context.currentTime,.25);
-    updateButton();
-  }
-
-  button.addEventListener('click',async()=>{
-    if(playing) stopBirds();
-    else await startBirds();
-  });
-
-  const unlock=async(event)=>{
+  function unlock(event){
     if(event?.target&&button.contains(event.target)) return;
-    const started=await startBirds();
-    if(started){
-      ['pointerdown','touchstart','keydown'].forEach(type=>
-        document.removeEventListener(type,unlock,true)
-      );
-    }
-  };
+    tryPlay();
+  }
+
   ['pointerdown','touchstart','keydown'].forEach(type=>
     document.addEventListener(type,unlock,{capture:true,passive:true})
   );
 
+  window.onYouTubeIframeAPIReady=()=>{
+    player=new window.YT.Player('forest-bird-player',{
+      width:'100%',
+      height:'100%',
+      videoId:VIDEO_ID,
+      playerVars:{
+        autoplay:1,
+        controls:1,
+        playsinline:1,
+        rel:0,
+        loop:1,
+        playlist:VIDEO_ID
+      },
+      events:{
+        onReady:event=>{
+          playerReady=true;
+          event.target.setVolume(48);
+          tryPlay();
+        },
+        onStateChange:event=>{
+          if(event.data===window.YT.PlayerState.PLAYING){
+            playing=true;
+            updateButton();
+            removeUnlockListeners();
+          }else if(event.data===window.YT.PlayerState.PAUSED){
+            playing=false;
+            updateButton();
+          }else if(event.data===window.YT.PlayerState.ENDED&&!userClosed){
+            event.target.seekTo(0);
+            event.target.playVideo();
+          }
+        }
+      }
+    });
+  };
+
+  const api=document.createElement('script');
+  api.src='https://www.youtube.com/iframe_api';
+  api.async=true;
+  document.head.appendChild(api);
+
+  button.addEventListener('click',()=>{
+    userClosed=false;
+    setOpen(true);
+    if(!playerReady) return;
+    if(playing) player.pauseVideo();
+    else player.playVideo();
+  });
+
+  panel.querySelector('.music-close').addEventListener('click',()=>{
+    userClosed=true;
+    playing=false;
+    if(playerReady) player.pauseVideo();
+    setOpen(false);
+    removeUnlockListeners();
+    updateButton();
+  });
+
   document.addEventListener('visibilitychange',()=>{
-    if(!context) return;
-    if(document.hidden&&context.state==='running'){
-      context.suspend();
-    }else if(!document.hidden&&playing){
-      context.resume().then(scheduleFlock).catch(()=>{});
-    }
+    if(!playerReady) return;
+    if(document.hidden&&playing) player.pauseVideo();
   });
 
   updateButton();
-  startBirds();
 })();
 
 // Welcoming hero scenes rotate automatically and can also be selected manually.
