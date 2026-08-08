@@ -232,53 +232,42 @@ if('IntersectionObserver' in window && !reduceMotion){
   revealTargets.forEach(el=>el.classList.add('visible'));
 }
 
-// Exact romantic Spanish-guitar recording supplied by the site owner, played through
-// YouTube's official embedded player. Autoplay is attempted immediately and
-// retried on the visitor's first interaction when the browser blocks sound.
+// Public-domain Spanish Romance performed by Alisa Gladyseva.
+// The recording is CC0 and plays in the site's own audio control without
+// showing or linking visitors to an external video platform.
 (()=>{
-  const VIDEO_ID='7I6i0LAPC8w';
   const lang=(document.documentElement.lang||'en').toLowerCase();
   const copy=lang.startsWith('es') ? {
     on:'Guitarra: activa', off:'Guitarra: apagada',
-    title:'Guitarra española romántica', source:'Grabación original de YouTube',
-    start:'Reproducir guitarra', stop:'Pausar guitarra', close:'Cerrar'
+    start:'Reproducir guitarra española', stop:'Pausar guitarra española'
   } : lang.startsWith('zh') ? {
     on:'吉他：开启', off:'吉他：关闭',
-    title:'浪漫西班牙吉他', source:'YouTube 原始录音',
-    start:'播放吉他', stop:'暂停吉他', close:'关闭'
+    start:'播放西班牙吉他', stop:'暂停西班牙吉他'
   } : {
     on:'Guitar on', off:'Guitar off',
-    title:'Romantic Spanish guitar', source:'Original YouTube recording',
-    start:'Play Spanish guitar', stop:'Pause Spanish guitar', close:'Close'
+    start:'Play Spanish guitar', stop:'Pause Spanish guitar'
   };
+
+  const audio=document.createElement('audio');
+  audio.id='spanish-guitar-audio';
+  audio.loop=true;
+  audio.preload='auto';
+  audio.volume=.42;
+  audio.setAttribute('playsinline','');
+  audio.setAttribute('aria-hidden','true');
+  audio.innerHTML=
+    '<source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/8/89/Romanza_espa%C3%B1ola.ogg/Romanza_espa%C3%B1ola.ogg.mp3" type="audio/mpeg">'+
+    '<source src="https://upload.wikimedia.org/wikipedia/commons/8/89/Romanza_espa%C3%B1ola.ogg" type="audio/ogg">';
 
   const button=document.createElement('button');
   button.className='music-toggle';
   button.type='button';
   button.setAttribute('aria-pressed','false');
-  button.innerHTML='<span aria-hidden="true">♫</span><b>'+copy.off+'</b>';
+  button.innerHTML='<span aria-hidden="true">🎸</span><b>'+copy.off+'</b>';
+  document.body.append(audio,button);
 
-  const panel=document.createElement('aside');
-  panel.className='music-panel show';
-  panel.id='spanish-guitar-panel';
-  panel.setAttribute('aria-hidden','false');
-  panel.innerHTML=
-    '<button class="music-close" type="button" aria-label="'+copy.close+'">×</button>'+
-    '<span class="music-art" aria-hidden="true">🎸</span>'+
-    '<div class="music-copy"><small>'+copy.source+'</small><strong>'+copy.title+'</strong></div>'+
-    '<div class="music-video"><div id="spanish-guitar-player"></div></div>';
-
-  document.body.append(panel,button);
-
-  let player;
-  let playerReady=false;
   let playing=false;
-  let userClosed=false;
-
-  function setOpen(open){
-    panel.classList.toggle('show',open);
-    panel.setAttribute('aria-hidden',String(!open));
-  }
+  let userPaused=false;
 
   function updateButton(){
     button.classList.toggle('is-playing',playing);
@@ -293,85 +282,51 @@ if('IntersectionObserver' in window && !reduceMotion){
     );
   }
 
-  function tryPlay(){
-    if(!playerReady||userClosed) return;
-    setOpen(true);
-    try{ player.playVideo(); }catch(error){}
+  async function startAudio(){
+    if(userPaused) return false;
+    try{
+      await audio.play();
+      return true;
+    }catch(error){
+      return false;
+    }
   }
 
   function unlock(event){
     if(event?.target&&button.contains(event.target)) return;
-    tryPlay();
+    startAudio();
   }
 
   ['pointerdown','touchstart','keydown'].forEach(type=>
     document.addEventListener(type,unlock,{capture:true,passive:true})
   );
 
-  window.onYouTubeIframeAPIReady=()=>{
-    player=new window.YT.Player('spanish-guitar-player',{
-      width:'100%',
-      height:'100%',
-      videoId:VIDEO_ID,
-      playerVars:{
-        autoplay:1,
-        controls:1,
-        playsinline:1,
-        rel:0,
-        loop:1,
-        playlist:VIDEO_ID
-      },
-      events:{
-        onReady:event=>{
-          playerReady=true;
-          event.target.setVolume(48);
-          tryPlay();
-        },
-        onStateChange:event=>{
-          if(event.data===window.YT.PlayerState.PLAYING){
-            playing=true;
-            updateButton();
-            removeUnlockListeners();
-          }else if(event.data===window.YT.PlayerState.PAUSED){
-            playing=false;
-            updateButton();
-          }else if(event.data===window.YT.PlayerState.ENDED&&!userClosed){
-            event.target.seekTo(0);
-            event.target.playVideo();
-          }
-        }
-      }
-    });
-  };
-
-  const api=document.createElement('script');
-  api.src='https://www.youtube.com/iframe_api';
-  api.async=true;
-  document.head.appendChild(api);
-
-  button.addEventListener('click',()=>{
-    userClosed=false;
-    setOpen(true);
-    if(!playerReady) return;
-    if(playing) player.pauseVideo();
-    else player.playVideo();
-  });
-
-  panel.querySelector('.music-close').addEventListener('click',()=>{
-    userClosed=true;
-    playing=false;
-    if(playerReady) player.pauseVideo();
-    setOpen(false);
+  audio.addEventListener('play',()=>{
+    playing=true;
+    updateButton();
     removeUnlockListeners();
+  });
+  audio.addEventListener('pause',()=>{
+    playing=false;
     updateButton();
   });
 
+  button.addEventListener('click',async()=>{
+    if(playing){
+      userPaused=true;
+      audio.pause();
+    }else{
+      userPaused=false;
+      await startAudio();
+    }
+  });
+
   document.addEventListener('visibilitychange',()=>{
-    if(!playerReady) return;
-    if(document.hidden&&playing) player.pauseVideo();
+    if(!document.hidden&&!userPaused&&!playing) startAudio();
   });
 
   updateButton();
+  startAudio();
 })();
 
 // Welcoming hero scenes rotate automatically and can also be selected manually.
