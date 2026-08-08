@@ -1,0 +1,44 @@
+{
+  "name": "Garden City Property Care",
+  "short_name": "Garden City",
+  "description": "Property care, lawn and garden maintenance, pressure washing, gutter cleaning and cleaning services in Richmond and Metro Vancouver.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#082a56",
+  "orientation": "portrait-primary",
+  "lang": "en-CA",
+  "categories": ["business", "home", "lifestyle"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Free Quote",
+      "short_name": "Quote",
+      "url": "/#quote"
+    },
+    {
+      "name": "Services",
+      "short_name": "Services",
+      "url": "/#services"
+    },
+    {
+      "name": "Call Us",
+      "short_name": "Call",
+      "url": "tel:+17787936624"
+    }
+  ]
+}
