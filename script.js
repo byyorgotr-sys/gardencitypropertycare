@@ -92,12 +92,12 @@ if(!reduceMotion){
   };
 
   const imgs=[
-    '/ChatGPT%20Image%207%20Ag%CC%86u%202026%2003_45_15%20(1).png',
-    '/ChatGPT%20Image%207%20Ag%CC%86u%202026%2003_45_15%20(2).png',
-    '/ChatGPT%20Image%207%20Ag%CC%86u%202026%2003_45_15%20(3).png',
-    '/ChatGPT%20Image%207%20Ag%CC%86u%202026%2003_45_15%20(4).png',
-    '/ChatGPT%20Image%207%20Ag%CC%86u%202026%2003_45_16%20(5).png',
-    '/ChatGPT%20Image%207%20Ag%CC%86u%202026%2003_45_16%20(6).png'
+    '/recent-work-1.svg',
+    '/recent-work-2.svg',
+    '/recent-work-3.svg',
+    '/recent-work-4.svg',
+    '/recent-work-5.svg',
+    '/recent-work-6.svg'
   ];
 
   const section=document.createElement('section');
@@ -226,3 +226,104 @@ if('IntersectionObserver' in window && !reduceMotion){
 }else{
   revealTargets.forEach(el=>el.classList.add('visible'));
 }
+
+// Optional, low-volume garden ambience. Browsers require a visitor gesture
+// before sound can begin, so this is intentionally opt-in and remembered.
+(()=>{
+  const lang=(document.documentElement.lang||'en').toLowerCase();
+  const copy=lang.startsWith('es') ? {
+    on:'Sonido relajante activado', off:'Activar sonido relajante',
+    prompt:'¿Desea una suave ambientación de jardín?', yes:'Activar', close:'Ahora no'
+  } : lang.startsWith('zh') ? {
+    on:'舒缓环境音已开启', off:'开启舒缓环境音',
+    prompt:'想听轻柔的花园环境音吗？', yes:'开启', close:'暂不开启'
+  } : {
+    on:'Relaxing sound on', off:'Turn on relaxing sound',
+    prompt:'Would you like gentle garden ambience?', yes:'Turn it on', close:'Not now'
+  };
+
+  const button=document.createElement('button');
+  button.className='ambient-toggle';
+  button.type='button';
+  button.setAttribute('aria-pressed','false');
+  button.innerHTML=`<span aria-hidden="true">♫</span><b>${copy.off}</b>`;
+  document.body.appendChild(button);
+
+  let ctx, master, active=false, chimeTimer;
+  const voices=[];
+
+  function buildSound(){
+    const AudioCtx=window.AudioContext||window.webkitAudioContext;
+    if(!AudioCtx) return false;
+    ctx=ctx||new AudioCtx();
+    master=ctx.createGain();
+    master.gain.value=0;
+    master.connect(ctx.destination);
+
+    [174.61,220,261.63].forEach((frequency,i)=>{
+      const oscillator=ctx.createOscillator();
+      const gain=ctx.createGain();
+      oscillator.type=i===1?'sine':'triangle';
+      oscillator.frequency.value=frequency;
+      oscillator.detune.value=i===2?5:-4;
+      gain.gain.value=i===1?.016:.009;
+      oscillator.connect(gain).connect(master);
+      oscillator.start();
+      voices.push(oscillator,gain);
+    });
+    return true;
+  }
+
+  function softChime(){
+    if(!active||!ctx||!master) return;
+    const osc=ctx.createOscillator();
+    const gain=ctx.createGain();
+    const now=ctx.currentTime;
+    const notes=[523.25,587.33,659.25,783.99];
+    osc.type='sine';
+    osc.frequency.value=notes[Math.floor(Math.random()*notes.length)];
+    gain.gain.setValueAtTime(0,now);
+    gain.gain.linearRampToValueAtTime(.018,now+.08);
+    gain.gain.exponentialRampToValueAtTime(.0001,now+2.8);
+    osc.connect(gain).connect(master);
+    osc.start(now); osc.stop(now+3);
+  }
+
+  async function start(){
+    if(!ctx&&!buildSound()) return;
+    await ctx.resume();
+    active=true;
+    master.gain.cancelScheduledValues(ctx.currentTime);
+    master.gain.linearRampToValueAtTime(.16,ctx.currentTime+1.4);
+    button.classList.add('is-on');
+    button.setAttribute('aria-pressed','true');
+    button.querySelector('b').textContent=copy.on;
+    localStorage.setItem('gardenAmbience','on');
+    softChime();
+    chimeTimer=setInterval(softChime,12000);
+  }
+
+  function stop(){
+    active=false;
+    clearInterval(chimeTimer);
+    if(master&&ctx) master.gain.linearRampToValueAtTime(0,ctx.currentTime+.7);
+    button.classList.remove('is-on');
+    button.setAttribute('aria-pressed','false');
+    button.querySelector('b').textContent=copy.off;
+    localStorage.setItem('gardenAmbience','off');
+  }
+
+  button.addEventListener('click',()=>active?stop():start());
+
+  if(!localStorage.getItem('gardenAmbience')){
+    const prompt=document.createElement('aside');
+    prompt.className='ambient-prompt';
+    prompt.setAttribute('role','dialog');
+    prompt.setAttribute('aria-label',copy.prompt);
+    prompt.innerHTML=`<span aria-hidden="true">🌿</span><p>${copy.prompt}</p><button type="button" data-sound-yes>${copy.yes}</button><button type="button" data-sound-close aria-label="${copy.close}">×</button>`;
+    document.body.appendChild(prompt);
+    setTimeout(()=>prompt.classList.add('show'),900);
+    prompt.querySelector('[data-sound-yes]').addEventListener('click',()=>{start();prompt.remove();});
+    prompt.querySelector('[data-sound-close]').addEventListener('click',()=>{localStorage.setItem('gardenAmbience','off');prompt.remove();});
+  }
+})();
