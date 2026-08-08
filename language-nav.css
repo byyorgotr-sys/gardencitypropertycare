@@ -29,6 +29,22 @@ html[lang="es"] header .links .pill{font-size:12px;padding:10px 13px}
 html[lang="es"] header .links .phone-link{font-size:12.5px}
 html[lang="zh-Hans"] header .links{gap:14px}
 
+/* Garden City brand mark */
+.logo{
+  width:54px!important;
+  height:54px!important;
+  border-radius:50%!important;
+  background:#fff url('/garden-city-brand-logo.svg') center/116% auto no-repeat!important;
+  color:transparent!important;
+  font-size:0!important;
+  box-shadow:0 7px 22px rgba(15,92,53,.22)!important;
+  border:1px solid rgba(33,122,65,.14);
+}
+header .brand{gap:10px}
+header .brand strong{font-size:17px;letter-spacing:-.01em}
+header .brand small{font-size:9px;letter-spacing:.12em}
+footer .logo{width:62px!important;height:62px!important;background-size:116% auto!important}
+
 @media (max-width:1180px) and (min-width:901px){
   header .container{width:min(1240px,calc(100% - 24px))}
   header .links{gap:11px;font-size:12px}
@@ -36,11 +52,17 @@ html[lang="zh-Hans"] header .links{gap:14px}
   header .links .pill{padding:9px 12px;font-size:12px}
   header .brand strong{font-size:15px}
   header .brand small{font-size:9px}
-  header .logo{width:40px;height:40px;border-radius:13px}
+  header .logo{width:46px!important;height:46px!important}
 }
 
 @media (max-width:900px){
   header .links{white-space:normal;font-size:14px}
   header .links .phone-link{font-size:14px}
   header .links .pill{font-size:14px}
+}
+
+@media (max-width:640px){
+  header .logo{width:47px!important;height:47px!important}
+  header .brand strong{font-size:15px}
+  header .brand small{font-size:8px}
 }
