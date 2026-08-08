@@ -1,4 +1,4 @@
-const CACHE_NAME='garden-city-v6';
+const CACHE_NAME='garden-city-v7';
 const CORE_ASSETS=[
   '/',
   '/styles.css',
