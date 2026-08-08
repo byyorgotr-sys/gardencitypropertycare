@@ -1,3 +1,4 @@
+@import url('/mobile-fixes.css');
 /* Compact multilingual navigation — safe override only */
 header .nav{gap:18px}
 header .brand{flex:0 0 auto}
