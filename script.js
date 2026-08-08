@@ -227,103 +227,46 @@ if('IntersectionObserver' in window && !reduceMotion){
   revealTargets.forEach(el=>el.classList.add('visible'));
 }
 
-// Optional, low-volume garden ambience. Browsers require a visitor gesture
-// before sound can begin, so this is intentionally opt-in and remembered.
+// A calm music recommendation from licensed streaming sources.
+// Audio is never copied or auto-played; visitors choose where to listen.
 (()=>{
   const lang=(document.documentElement.lang||'en').toLowerCase();
   const copy=lang.startsWith('es') ? {
-    on:'Sonido relajante activado', off:'Activar sonido relajante',
-    prompt:'¿Desea una suave ambientación de jardín?', yes:'Activar', close:'Ahora no'
+    button:'Música tranquila', title:'Un momento para respirar',
+    text:'Passenger — Let Her Go', spotify:'Escuchar en Spotify', youtube:'Ver en YouTube', close:'Cerrar'
   } : lang.startsWith('zh') ? {
-    on:'舒缓环境音已开启', off:'开启舒缓环境音',
-    prompt:'想听轻柔的花园环境音吗？', yes:'开启', close:'暂不开启'
+    button:'舒缓音乐', title:'放松片刻',
+    text:'Passenger — Let Her Go', spotify:'在 Spotify 收听', youtube:'在 YouTube 观看', close:'关闭'
   } : {
-    on:'Relaxing sound on', off:'Turn on relaxing sound',
-    prompt:'Would you like gentle garden ambience?', yes:'Turn it on', close:'Not now'
+    button:'Calm music', title:'A moment to breathe',
+    text:'Passenger — Let Her Go', spotify:'Listen on Spotify', youtube:'Watch on YouTube', close:'Close'
   };
 
   const button=document.createElement('button');
-  button.className='ambient-toggle';
+  button.className='music-toggle';
   button.type='button';
-  button.setAttribute('aria-pressed','false');
-  button.innerHTML=`<span aria-hidden="true">♫</span><b>${copy.off}</b>`;
-  document.body.appendChild(button);
+  button.setAttribute('aria-expanded','false');
+  button.setAttribute('aria-controls','music-panel');
+  button.innerHTML=`<span aria-hidden="true">♫</span><b>${copy.button}</b>`;
+  const panel=document.createElement('aside');
+  panel.className='music-panel';
+  panel.id='music-panel';
+  panel.setAttribute('aria-hidden','true');
+  panel.innerHTML=`
+    <button class="music-close" type="button" aria-label="${copy.close}">×</button>
+    <span class="music-art" aria-hidden="true">♫</span>
+    <div class="music-copy"><small>${copy.title}</small><strong>${copy.text}</strong></div>
+    <div class="music-actions">
+      <a class="spotify" href="https://open.spotify.com/track/2jyjhRf6DVbMPU5zxagN2h" target="_blank" rel="noopener noreferrer">${copy.spotify}</a>
+      <a class="youtube" href="https://www.youtube.com/watch?v=RBumgq5yVrA" target="_blank" rel="noopener noreferrer">${copy.youtube}</a>
+    </div>`;
+  document.body.append(panel,button);
 
-  let ctx, master, active=false, chimeTimer;
-  const voices=[];
-
-  function buildSound(){
-    const AudioCtx=window.AudioContext||window.webkitAudioContext;
-    if(!AudioCtx) return false;
-    ctx=ctx||new AudioCtx();
-    master=ctx.createGain();
-    master.gain.value=0;
-    master.connect(ctx.destination);
-
-    [174.61,220,261.63].forEach((frequency,i)=>{
-      const oscillator=ctx.createOscillator();
-      const gain=ctx.createGain();
-      oscillator.type=i===1?'sine':'triangle';
-      oscillator.frequency.value=frequency;
-      oscillator.detune.value=i===2?5:-4;
-      gain.gain.value=i===1?.016:.009;
-      oscillator.connect(gain).connect(master);
-      oscillator.start();
-      voices.push(oscillator,gain);
-    });
-    return true;
+  function setOpen(open){
+    panel.classList.toggle('show',open);
+    panel.setAttribute('aria-hidden',String(!open));
+    button.setAttribute('aria-expanded',String(open));
   }
-
-  function softChime(){
-    if(!active||!ctx||!master) return;
-    const osc=ctx.createOscillator();
-    const gain=ctx.createGain();
-    const now=ctx.currentTime;
-    const notes=[523.25,587.33,659.25,783.99];
-    osc.type='sine';
-    osc.frequency.value=notes[Math.floor(Math.random()*notes.length)];
-    gain.gain.setValueAtTime(0,now);
-    gain.gain.linearRampToValueAtTime(.018,now+.08);
-    gain.gain.exponentialRampToValueAtTime(.0001,now+2.8);
-    osc.connect(gain).connect(master);
-    osc.start(now); osc.stop(now+3);
-  }
-
-  async function start(){
-    if(!ctx&&!buildSound()) return;
-    await ctx.resume();
-    active=true;
-    master.gain.cancelScheduledValues(ctx.currentTime);
-    master.gain.linearRampToValueAtTime(.16,ctx.currentTime+1.4);
-    button.classList.add('is-on');
-    button.setAttribute('aria-pressed','true');
-    button.querySelector('b').textContent=copy.on;
-    localStorage.setItem('gardenAmbience','on');
-    softChime();
-    chimeTimer=setInterval(softChime,12000);
-  }
-
-  function stop(){
-    active=false;
-    clearInterval(chimeTimer);
-    if(master&&ctx) master.gain.linearRampToValueAtTime(0,ctx.currentTime+.7);
-    button.classList.remove('is-on');
-    button.setAttribute('aria-pressed','false');
-    button.querySelector('b').textContent=copy.off;
-    localStorage.setItem('gardenAmbience','off');
-  }
-
-  button.addEventListener('click',()=>active?stop():start());
-
-  if(!localStorage.getItem('gardenAmbience')){
-    const prompt=document.createElement('aside');
-    prompt.className='ambient-prompt';
-    prompt.setAttribute('role','dialog');
-    prompt.setAttribute('aria-label',copy.prompt);
-    prompt.innerHTML=`<span aria-hidden="true">🌿</span><p>${copy.prompt}</p><button type="button" data-sound-yes>${copy.yes}</button><button type="button" data-sound-close aria-label="${copy.close}">×</button>`;
-    document.body.appendChild(prompt);
-    setTimeout(()=>prompt.classList.add('show'),900);
-    prompt.querySelector('[data-sound-yes]').addEventListener('click',()=>{start();prompt.remove();});
-    prompt.querySelector('[data-sound-close]').addEventListener('click',()=>{localStorage.setItem('gardenAmbience','off');prompt.remove();});
-  }
+  button.addEventListener('click',()=>setOpen(!panel.classList.contains('show')));
+  panel.querySelector('.music-close').addEventListener('click',()=>setOpen(false));
 })();
