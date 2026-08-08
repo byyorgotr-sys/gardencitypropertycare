@@ -227,67 +227,175 @@ if('IntersectionObserver' in window && !reduceMotion){
   revealTargets.forEach(el=>el.classList.add('visible'));
 }
 
-// A calm music recommendation from licensed streaming sources.
-// Audio is never copied or auto-played; visitors choose where to listen.
+// Calm, original background music generated directly in the browser.
+// Audible autoplay is attempted immediately. If the browser blocks it, the
+// soundtrack starts on the visitor's first interaction anywhere on the page.
 (()=>{
   const lang=(document.documentElement.lang||'en').toLowerCase();
   const copy=lang.startsWith('es') ? {
-    button:'Música tranquila', title:'Un momento para respirar',
-    text:'Passenger — Let Her Go', youtube:'Reproducir aquí', close:'Cerrar'
+    on:'Música: activa', off:'Música: apagada',
+    start:'Activar música tranquila', stop:'Detener música tranquila'
   } : lang.startsWith('zh') ? {
-    button:'舒缓音乐', title:'放松片刻',
-    text:'Passenger — Let Her Go', youtube:'在此播放', close:'关闭'
+    on:'音乐：开启', off:'音乐：关闭',
+    start:'开启舒缓音乐', stop:'关闭舒缓音乐'
   } : {
-    button:'Calm music', title:'A moment to breathe',
-    text:'Passenger — Let Her Go', youtube:'Play here', close:'Close'
+    on:'Music on', off:'Music off',
+    start:'Turn on calm music', stop:'Turn off calm music'
   };
 
   const button=document.createElement('button');
   button.className='music-toggle';
   button.type='button';
-  button.setAttribute('aria-expanded','false');
-  button.setAttribute('aria-controls','music-panel');
-  button.innerHTML=`<span aria-hidden="true">♫</span><b>${copy.button}</b>`;
-  const panel=document.createElement('aside');
-  panel.className='music-panel';
-  panel.id='music-panel';
-  panel.setAttribute('aria-hidden','true');
-  panel.innerHTML=`
-    <button class="music-close" type="button" aria-label="${copy.close}">×</button>
-    <span class="music-art" aria-hidden="true">♫</span>
-    <div class="music-copy"><small>${copy.title}</small><strong>${copy.text}</strong></div>
-    <div class="music-actions">
-      <button class="youtube" type="button">▶ ${copy.youtube}</button>
-    </div>`;
-  document.body.append(panel,button);
+  button.setAttribute('aria-pressed','false');
+  button.innerHTML='<span aria-hidden="true">♫</span><b>'+copy.off+'</b>';
+  document.body.appendChild(button);
 
-  function setOpen(open){
-    panel.classList.toggle('show',open);
-    panel.setAttribute('aria-hidden',String(!open));
-    button.setAttribute('aria-expanded',String(open));
+  let context;
+  let master;
+  let chordTimer;
+  let bellTimer;
+  let playing=false;
+  let chordIndex=0;
+  const chords=[
+    [130.81,164.81,196.00,246.94],
+    [110.00,130.81,164.81,196.00],
+    [87.31,130.81,164.81,220.00],
+    [98.00,123.47,146.83,196.00]
+  ];
+  const voices=[];
+
+  function updateButton(){
+    button.classList.toggle('is-playing',playing);
+    button.setAttribute('aria-pressed',String(playing));
+    button.setAttribute('aria-label',playing?copy.stop:copy.start);
+    button.querySelector('b').textContent=playing?copy.on:copy.off;
   }
-  button.addEventListener('click',()=>setOpen(!panel.classList.contains('show')));
-  function playVideo(){
-    if(panel.querySelector('.music-video')) return;
-    const frame=document.createElement('div');
-    frame.className='music-video';
-    frame.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/RBumgq5yVrA?autoplay=1&rel=0" title="Passenger - Let Her Go" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
-    panel.appendChild(frame);
-    panel.querySelector('.youtube')?.remove();
+
+  function makeBell(frequency){
+    if(!context || !master || context.state!=='running' || !playing) return;
+    const now=context.currentTime;
+    const oscillator=context.createOscillator();
+    const gain=context.createGain();
+    oscillator.type='sine';
+    oscillator.frequency.setValueAtTime(frequency,now);
+    oscillator.frequency.exponentialRampToValueAtTime(frequency*.997,now+3.8);
+    gain.gain.setValueAtTime(.0001,now);
+    gain.gain.exponentialRampToValueAtTime(.028,now+.05);
+    gain.gain.exponentialRampToValueAtTime(.0001,now+3.8);
+    oscillator.connect(gain).connect(master);
+    oscillator.start(now);
+    oscillator.stop(now+4);
   }
-  panel.querySelector('.youtube').addEventListener('click',playVideo);
-  panel.querySelector('.music-close').addEventListener('click',()=>{
-    panel.querySelector('.music-video')?.remove();
-    if(!panel.querySelector('.youtube')){
-      const play=document.createElement('button');
-      play.className='youtube';
-      play.type='button';
-      play.textContent=`▶ ${copy.youtube}`;
-      play.addEventListener('click',playVideo);
-      panel.querySelector('.music-actions').appendChild(play);
+
+  function setChord(index){
+    if(!context) return;
+    const now=context.currentTime;
+    chords[index].forEach((frequency,i)=>{
+      voices[i].frequency.cancelScheduledValues(now);
+      voices[i].frequency.setTargetAtTime(frequency,now,2.2);
+    });
+  }
+
+  function buildSound(){
+    context=new (window.AudioContext||window.webkitAudioContext)();
+    master=context.createGain();
+    master.gain.value=0;
+
+    const filter=context.createBiquadFilter();
+    filter.type='lowpass';
+    filter.frequency.value=900;
+    filter.Q.value=.45;
+
+    const delay=context.createDelay(1);
+    const feedback=context.createGain();
+    const wet=context.createGain();
+    delay.delayTime.value=.34;
+    feedback.gain.value=.18;
+    wet.gain.value=.16;
+
+    filter.connect(master);
+    filter.connect(delay);
+    delay.connect(feedback).connect(delay);
+    delay.connect(wet).connect(master);
+    master.connect(context.destination);
+
+    chords[0].forEach((frequency,i)=>{
+      const oscillator=context.createOscillator();
+      const gain=context.createGain();
+      oscillator.type=i%2?'sine':'triangle';
+      oscillator.frequency.value=frequency;
+      gain.gain.value=i<2?.022:.014;
+      oscillator.connect(gain).connect(filter);
+      oscillator.start();
+      voices.push(oscillator);
+    });
+
+    const breath=context.createOscillator();
+    const breathDepth=context.createGain();
+    breath.type='sine';
+    breath.frequency.value=.07;
+    breathDepth.gain.value=.006;
+    breath.connect(breathDepth).connect(master.gain);
+    breath.start();
+
+    chordTimer=setInterval(()=>{
+      chordIndex=(chordIndex+1)%chords.length;
+      setChord(chordIndex);
+    },9000);
+    bellTimer=setInterval(()=>{
+      const notes=chords[chordIndex];
+      makeBell(notes[Math.floor(Math.random()*notes.length)]*2);
+    },4500);
+  }
+
+  async function startMusic(){
+    try{
+      if(!context) buildSound();
+      await context.resume();
+      if(context.state!=='running') return false;
+      playing=true;
+      master.gain.cancelScheduledValues(context.currentTime);
+      master.gain.setTargetAtTime(.075,context.currentTime,.8);
+      updateButton();
+      return true;
+    }catch(error){
+      return false;
     }
-    setOpen(false);
+  }
+
+  function stopMusic(){
+    if(!context) return;
+    playing=false;
+    master.gain.cancelScheduledValues(context.currentTime);
+    master.gain.setTargetAtTime(0,context.currentTime,.35);
+    updateButton();
+  }
+
+  button.addEventListener('click',async()=>{
+    if(playing) stopMusic();
+    else await startMusic();
   });
+
+  const unlock=async()=>{
+    const started=await startMusic();
+    if(started){
+      ['pointerdown','touchstart','keydown'].forEach(type=>
+        document.removeEventListener(type,unlock,true)
+      );
+    }
+  };
+  ['pointerdown','touchstart','keydown'].forEach(type=>
+    document.addEventListener(type,unlock,{capture:true,passive:true})
+  );
+
+  document.addEventListener('visibilitychange',()=>{
+    if(!context) return;
+    if(document.hidden && context.state==='running') context.suspend();
+    else if(!document.hidden && playing) context.resume().catch(()=>{});
+  });
+
+  updateButton();
+  startMusic();
 })();
 
 // Welcoming hero scenes rotate automatically and can also be selected manually.
