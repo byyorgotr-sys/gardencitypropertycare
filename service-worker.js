@@ -1,4 +1,4 @@
-const CACHE_NAME='garden-city-v8';
+const CACHE_NAME='garden-city-v9';
 const CORE_ASSETS=[
   '/',
   '/styles.css',
@@ -40,12 +40,12 @@ self.addEventListener('fetch',event=>{
   }
 
   event.respondWith(
-    caches.match(event.request).then(cached=>cached||fetch(event.request).then(response=>{
+    fetch(event.request).then(response=>{
       if(response && response.status===200){
         const copy=response.clone();
         caches.open(CACHE_NAME).then(cache=>cache.put(event.request,copy));
       }
       return response;
-    }))
+    }).catch(()=>caches.match(event.request))
   );
 });
