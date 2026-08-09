@@ -232,103 +232,6 @@ if('IntersectionObserver' in window && !reduceMotion){
   revealTargets.forEach(el=>el.classList.add('visible'));
 }
 
-// Public-domain Spanish Romance performed by Alisa Gladyseva.
-// The recording is CC0 and plays in the site's own audio control without
-// showing or linking visitors to an external video platform.
-(()=>{
-  const lang=(document.documentElement.lang||'en').toLowerCase();
-  const copy=lang.startsWith('es') ? {
-    on:'Guitarra: activa', off:'Guitarra: apagada',
-    start:'Reproducir guitarra española', stop:'Pausar guitarra española'
-  } : lang.startsWith('zh') ? {
-    on:'吉他：开启', off:'吉他：关闭',
-    start:'播放西班牙吉他', stop:'暂停西班牙吉他'
-  } : {
-    on:'Guitar on', off:'Guitar off',
-    start:'Play Spanish guitar', stop:'Pause Spanish guitar'
-  };
-
-  const audio=document.createElement('audio');
-  audio.id='spanish-guitar-audio';
-  audio.loop=true;
-  audio.preload='auto';
-  audio.volume=.42;
-  audio.setAttribute('playsinline','');
-  audio.setAttribute('aria-hidden','true');
-  audio.innerHTML=
-    '<source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/8/89/Romanza_espa%C3%B1ola.ogg/Romanza_espa%C3%B1ola.ogg.mp3" type="audio/mpeg">'+
-    '<source src="https://upload.wikimedia.org/wikipedia/commons/8/89/Romanza_espa%C3%B1ola.ogg" type="audio/ogg">';
-
-  const button=document.createElement('button');
-  button.className='music-toggle';
-  button.type='button';
-  button.setAttribute('aria-pressed','false');
-  button.innerHTML='<span aria-hidden="true">🎸</span><b>'+copy.off+'</b>';
-  document.body.append(audio,button);
-
-  let playing=false;
-  let userPaused=false;
-
-  function updateButton(){
-    button.classList.toggle('is-playing',playing);
-    button.setAttribute('aria-pressed',String(playing));
-    button.setAttribute('aria-label',playing?copy.stop:copy.start);
-    button.querySelector('b').textContent=playing?copy.on:copy.off;
-  }
-
-  function removeUnlockListeners(){
-    ['pointerdown','touchstart','keydown'].forEach(type=>
-      document.removeEventListener(type,unlock,true)
-    );
-  }
-
-  async function startAudio(){
-    if(userPaused) return false;
-    try{
-      await audio.play();
-      return true;
-    }catch(error){
-      return false;
-    }
-  }
-
-  function unlock(event){
-    if(event?.target&&button.contains(event.target)) return;
-    startAudio();
-  }
-
-  ['pointerdown','touchstart','keydown'].forEach(type=>
-    document.addEventListener(type,unlock,{capture:true,passive:true})
-  );
-
-  audio.addEventListener('play',()=>{
-    playing=true;
-    updateButton();
-    removeUnlockListeners();
-  });
-  audio.addEventListener('pause',()=>{
-    playing=false;
-    updateButton();
-  });
-
-  button.addEventListener('click',async()=>{
-    if(playing){
-      userPaused=true;
-      audio.pause();
-    }else{
-      userPaused=false;
-      await startAudio();
-    }
-  });
-
-  document.addEventListener('visibilitychange',()=>{
-    if(!document.hidden&&!userPaused&&!playing) startAudio();
-  });
-
-  updateButton();
-  startAudio();
-})();
-
 // Welcoming hero scenes rotate automatically and can also be selected manually.
 (()=>{
   const hero=document.querySelector('.hero');
@@ -366,7 +269,7 @@ if('IntersectionObserver' in window && !reduceMotion){
     current=(index+slideItems.length)%slideItems.length;
     slideItems.forEach((slide,i)=>slide.classList.toggle('is-active',i===current));
     dotItems.forEach((dot,i)=>{
-      dot.classList.toggle('is-active',i===current);
+      dot.classList.toggle('is-active',i===current));
       dot.setAttribute('aria-pressed',String(i===current));
     });
   }
