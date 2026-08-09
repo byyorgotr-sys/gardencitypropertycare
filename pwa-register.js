@@ -85,3 +85,42 @@
     },true);
   }
 })();
+
+// Homepage hero cleaning video.
+(()=>{
+  const hero=document.querySelector('.hero');
+  if(!hero || hero.querySelector('.hero-cleaning-video')) return;
+
+  const style=document.createElement('style');
+  style.textContent=`
+    .hero{background:#061d3c!important;min-height:650px}
+    .hero-cleaning-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:-6;filter:saturate(.9) contrast(1.02)}
+    .hero-video-overlay{position:absolute;inset:0;z-index:-5;background:linear-gradient(90deg,rgba(3,18,40,.86) 0%,rgba(3,24,52,.67) 48%,rgba(4,38,67,.48) 100%)}
+    .hero-slides,.hero-dots{display:none!important}
+    .hero .hero-grid{z-index:2}
+    .hero .kicker{background:rgba(4,28,56,.46);backdrop-filter:blur(7px)}
+    .hero .hero-card{background:rgba(255,255,255,.93);backdrop-filter:blur(12px)}
+    @media(max-width:640px){.hero-cleaning-video{object-position:56% center}.hero-video-overlay{background:linear-gradient(180deg,rgba(3,18,40,.80),rgba(3,24,52,.72))}}
+    @media(prefers-reduced-motion:reduce){.hero-cleaning-video{display:none}}
+  `;
+  document.head.appendChild(style);
+
+  const video=document.createElement('video');
+  video.className='hero-cleaning-video';
+  video.autoplay=true;
+  video.muted=true;
+  video.loop=true;
+  video.playsInline=true;
+  video.preload='metadata';
+  video.setAttribute('aria-hidden','true');
+  video.innerHTML='<source src="https://www.pexels.com/download/video/4109343/" type="video/mp4">';
+
+  const overlay=document.createElement('div');
+  overlay.className='hero-video-overlay';
+  overlay.setAttribute('aria-hidden','true');
+
+  hero.prepend(overlay);
+  hero.prepend(video);
+
+  video.play().catch(()=>{});
+})();
