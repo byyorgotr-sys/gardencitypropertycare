@@ -29,4 +29,59 @@
       navigator.serviceWorker.register('/service-worker.js').catch(()=>{});
     });
   }
+
+  // Submit the quote form through FormSubmit's AJAX endpoint so visitors never
+  // leave Garden City or land on a FormSubmit help/thank-you page.
+  const leadForm=document.querySelector('#leadForm');
+  if(leadForm){
+    leadForm.addEventListener('submit',async event=>{
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      const submitButton=leadForm.querySelector('button[type="submit"]');
+      const originalText=submitButton?.textContent || 'Send Free Quote Request';
+      let status=leadForm.querySelector('[data-form-status]');
+      if(!status){
+        status=document.createElement('p');
+        status.setAttribute('data-form-status','');
+        status.setAttribute('role','status');
+        status.style.margin='.7rem 0 0';
+        status.style.fontWeight='800';
+        leadForm.appendChild(status);
+      }
+
+      if(submitButton){
+        submitButton.disabled=true;
+        submitButton.textContent='Sending…';
+      }
+      status.textContent='Sending your request…';
+      status.style.color='#0b6e4f';
+
+      try{
+        const formData=new FormData(leadForm);
+        formData.delete('_next');
+        formData.set('_captcha','false');
+
+        const response=await fetch('https://formsubmit.co/ajax/byyorgotr@gmail.com',{
+          method:'POST',
+          headers:{'Accept':'application/json'},
+          body:formData
+        });
+        const result=await response.json().catch(()=>({}));
+
+        if(!response.ok || result.success===false){
+          throw new Error(result.message || 'Unable to submit form');
+        }
+
+        window.location.assign('/thanks.html');
+      }catch(error){
+        status.textContent='We could not send the request. Please try again, or call/text us at 778-793-6624.';
+        status.style.color='#b42318';
+        if(submitButton){
+          submitButton.disabled=false;
+          submitButton.textContent=originalText;
+        }
+      }
+    },true);
+  }
 })();
