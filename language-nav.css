@@ -67,3 +67,59 @@ footer .logo{width:62px!important;height:62px!important;background-size:116% aut
   header .brand strong{font-size:15px}
   header .brand small{font-size:8px}
 }
+
+/* Premium LED / neon scrolling hero ticker */
+.hero-grid:after{
+  width:min(1180px,calc(100vw - 42px))!important;
+  max-width:calc(100vw - 42px)!important;
+  bottom:24px!important;
+  padding:14px 22px!important;
+  border:1px solid rgba(116,255,206,.28)!important;
+  border-radius:999px!important;
+  background:linear-gradient(90deg,rgba(4,24,20,.94) 0%,rgba(8,47,38,.97) 45%,rgba(6,33,38,.96) 72%,rgba(4,24,20,.94) 100%)!important;
+  color:#effff7!important;
+  font-weight:900!important;
+  letter-spacing:.045em!important;
+  text-shadow:0 0 4px rgba(255,255,255,.50),0 0 10px rgba(104,255,205,.42),0 0 20px rgba(91,196,255,.30)!important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.04),inset 0 0 24px rgba(77,225,176,.10),0 0 18px rgba(74,239,185,.20),0 12px 36px rgba(0,18,15,.34)!important;
+  animation:gardenTicker 22s linear infinite,ledTickerGlow 4.8s ease-in-out infinite!important;
+}
+
+@keyframes ledTickerGlow{
+  0%,100%{
+    border-color:rgba(116,255,206,.22);
+    text-shadow:0 0 4px rgba(255,255,255,.42),0 0 9px rgba(104,255,205,.30),0 0 17px rgba(91,196,255,.22);
+    box-shadow:inset 0 0 22px rgba(77,225,176,.07),0 0 13px rgba(74,239,185,.13),0 12px 34px rgba(0,18,15,.30);
+  }
+  50%{
+    border-color:rgba(135,255,217,.38);
+    text-shadow:0 0 6px rgba(255,255,255,.58),0 0 15px rgba(104,255,205,.52),0 0 29px rgba(91,196,255,.38),0 0 38px rgba(245,205,91,.12);
+    box-shadow:inset 0 0 30px rgba(77,225,176,.14),0 0 27px rgba(74,239,185,.24),0 12px 38px rgba(0,18,15,.36);
+  }
+}
+
+@media(max-width:900px){
+  .hero-grid:after{
+    width:calc(100vw - 28px)!important;
+    max-width:calc(100vw - 28px)!important;
+    bottom:18px!important;
+    padding:12px 18px!important;
+    font-size:13px!important;
+    animation:gardenTicker 18s linear infinite,ledTickerGlow 4.8s ease-in-out infinite!important;
+  }
+}
+
+@media(max-width:640px){
+  .hero-grid:after{
+    width:calc(100vw - 20px)!important;
+    max-width:calc(100vw - 20px)!important;
+    bottom:10px!important;
+    padding:10px 14px!important;
+    font-size:12px!important;
+    animation:gardenTicker 16s linear infinite,ledTickerGlow 4.8s ease-in-out infinite!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .hero-grid:after{animation:none!important}
+}
