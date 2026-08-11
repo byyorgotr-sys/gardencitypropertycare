@@ -28,12 +28,12 @@
 .hero .trust-row span{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);padding:6px 9px;border-radius:99px}.hero-card{backdrop-filter:blur(10px)}
 
 /* Garden City hero photo + elegant scrolling slogan */
-.hero{background:linear-gradient(90deg,rgba(4,23,47,.92) 0%,rgba(4,35,46,.78) 45%,rgba(4,23,47,.24) 100%),url('/why-garden-city.webp') center/cover no-repeat!important}
-.hero:before{background:linear-gradient(90deg,rgba(3,20,37,.48),transparent 62%)!important;opacity:1!important;animation:none!important}
+.hero{background:linear-gradient(90deg,rgba(4,23,47,.88) 0%,rgba(4,35,46,.68) 45%,rgba(4,23,47,.18) 100%),url('/hero-white-house-banner.svg?v=20260811c') center/cover no-repeat!important}
+.hero:before{background:linear-gradient(90deg,rgba(3,20,37,.42),transparent 62%)!important;opacity:1!important;animation:none!important}
 .hero:after{display:none!important}
 .hero .ocean-light,.hero .bubble-layer,.hero .hero-stars{display:none!important}
 .hero-grid{padding-bottom:128px!important}
-.hero-grid:after{content:"Garden City Property Care   •   Professional Cleaning   •   Lawn & Yard Care   •   Reliable Service   •   A Cleaner Space, A Better Life.   •   Free Quotes Available   •   Garden City Property Care   •   Professional Cleaning   •   Lawn & Yard Care   •   Reliable Service";position:absolute;left:50%;bottom:26px;width:100vw;transform:translateX(-50%);white-space:nowrap;overflow:hidden;padding:14px 0;border-top:1px solid rgba(255,255,255,.32);border-bottom:1px solid rgba(255,255,255,.26);background:rgba(247,252,248,.92);backdrop-filter:blur(10px);color:#123c2f;font-family:Manrope,Inter,sans-serif;font-size:14px;font-weight:800;letter-spacing:.025em;text-indent:0;box-shadow:0 10px 30px rgba(4,30,25,.16);animation:gardenTicker 22s linear infinite}
+.hero-grid:after{content:"Garden City Property Care   •   Professional Cleaning   •   Lawn & Yard Care   •   Reliable Service   •   A Cleaner Space, A Better Life.   •   Free Quotes Available   •   Garden City Property Care   •   Professional Cleaning   •   Lawn & Yard Care   •   Reliable Service";position:absolute;left:50%;bottom:26px;width:100vw;transform:translateX(-50%);white-space:nowrap;overflow:hidden;padding:14px 0;border-top:1px solid rgba(255,255,255,.32);border-bottom:1px solid rgba(255,255,255,.26);background:rgba(247,252,248,.94);backdrop-filter:blur(10px);color:#123c2f;font-family:Manrope,Inter,sans-serif;font-size:14px;font-weight:800;letter-spacing:.025em;text-indent:0;box-shadow:0 10px 30px rgba(4,30,25,.16);animation:gardenTicker 22s linear infinite}
 .hero h1{max-width:780px;text-shadow:0 3px 22px rgba(0,0,0,.32)}
 .hero h1 span{color:#dfffdc}
 .hero p{color:#f1fbf6;text-shadow:0 2px 12px rgba(0,0,0,.28)}
